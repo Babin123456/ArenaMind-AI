@@ -90,26 +90,42 @@ Use this option to run the services directly on your host machine to allow fast 
    ```
 
 #### Step 2: Setup and start the FastAPI Backend
+> [!IMPORTANT]
+> The backend is written in Python (FastAPI). All commands below **must be run from the backend directory** (`apps/api`), NOT from the root or the web directory.
+> If you are currently in `apps/web`, run `cd ../api` first.
+
 1. Navigate to the API folder, create a virtual environment, and install dependencies:
    ```bash
-   cd apps/api
+   # Make sure you are in the apps/api folder
+   cd d:/Projects/ArenaMind-AI/apps/api
+   
+   # Create and activate virtual environment
    python -m venv .venv
-   # On Windows:
+   
+   # On Windows (Command Prompt/PowerShell):
    .venv\Scripts\activate
-   # On macOS/Linux:
+   # On macOS/Linux/Git Bash:
    source .venv/bin/activate
    
+   # Install backend packages
    pip install -r requirements.txt
    ```
 2. Start the Uvicorn server:
    ```bash
+   # Must be run from the apps/api folder with virtual environment active
    uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
    ```
 
 #### Step 3: Setup and start the Next.js Frontend
+> [!IMPORTANT]
+> The frontend is written in TypeScript/React (Next.js). All commands below **must be run from the frontend directory** (`apps/web`).
+
 1. Open a new terminal, navigate to the web folder, and install dependencies:
    ```bash
-   cd apps/web
+   # Make sure you are in the apps/web folder
+   cd d:/Projects/ArenaMind-AI/apps/web
+   
+   # Install Node packages
    npm install
    ```
 2. Start the Next.js development server:
