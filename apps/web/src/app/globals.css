@@ -1,0 +1,720 @@
+/* ============================================================
+   ArenaMind AI — Global Design Tokens & Layout
+   ============================================================
+   A dark-theme command-center aesthetic built with CSS custom
+   properties. Sections are ordered by scope: tokens → resets →
+   layout → sidebar → topbar → statusbar → content panels →
+   copilot → incidents → responsive → motion.
+   ============================================================ */
+
+
+/* ── Design tokens ─────────────────────────────────────────── */
+
+:root {
+  color-scheme: dark;
+
+  /* Surface palette */
+  --bg:     #09090b;
+  --panel:  #111827;
+  --panel2: #0e1522;
+  --line:   #263244;
+
+  /* Text palette */
+  --text:   #f8fafc;
+  --muted:  #94a3b8;
+
+  /* Accent palette */
+  --cyan:   #00e5ff;
+  --green:  #22c55e;
+  --amber:  #f59e0b;
+  --red:    #ef4444;
+
+  font-family: "Cambria Math", Cambria, Georgia, serif;
+}
+
+
+/* ── Resets ─────────────────────────────────────────────────── */
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100%;
+  letter-spacing: 0;
+}
+
+button, input { font: inherit; }
+button { color: inherit; }
+
+
+/* ── Skip link (accessibility) ─────────────────────────────── */
+
+.skip {
+  position: fixed;
+  top: -60px;
+  left: 16px;
+  background: var(--cyan);
+  color: #001316;
+  padding: 12px 18px;
+  z-index: 100;
+}
+.skip:focus { top: 12px; }
+
+
+/* ── Focus & screen-reader utilities ───────────────────────── */
+
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+
+/* ── Shell layout ──────────────────────────────────────────── */
+
+.shell {
+  display: grid;
+  grid-template-columns: 244px minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+
+/* ── Sidebar ───────────────────────────────────────────────── */
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  border-right: 1px solid var(--line);
+  background: #0c1018;
+  padding: 22px 14px;
+  display: flex;
+  flex-direction: column;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 0 8px 28px;
+}
+
+.brandmark {
+  display: grid;
+  place-items: center;
+  width: 39px;
+  height: 39px;
+  background: var(--cyan);
+  color: #001318;
+}
+.brandmark svg { width: 22px; }
+
+.brand strong {
+  display: block;
+  font-size: 18px;
+}
+
+.brand small,
+.system small {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.sidebar nav { display: grid; gap: 5px; }
+
+.nav {
+  border: 0;
+  background: transparent;
+  min-height: 44px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 0 12px;
+  color: #aab6c6;
+  cursor: pointer;
+  text-align: left;
+}
+.nav svg { width: 18px; }
+.nav:hover { background: #182131; color: white; }
+
+.nav.active {
+  background: #12303a;
+  color: var(--cyan);
+  box-shadow: inset 3px 0 var(--cyan);
+}
+
+.nav b {
+  margin-left: auto;
+  background: #4a1620;
+  color: #fca5a5;
+  border-radius: 20px;
+  padding: 2px 7px;
+  font-size: 11px;
+}
+
+.system {
+  margin-top: auto;
+  border-top: 1px solid var(--line);
+  padding: 18px 8px 0;
+}
+.system span { font-size: 12px; }
+
+/* Shared pulsing dot for system-nominal and LIVE indicators */
+.system i,
+.live i {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  margin-right: 8px;
+}
+
+
+/* ── Main area ─────────────────────────────────────────────── */
+
+main { min-width: 0; }
+
+
+/* ── Top bar ───────────────────────────────────────────────── */
+
+.topbar {
+  height: 84px;
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+}
+
+.eyebrow {
+  font: 700 10px/1.3 system-ui;
+  color: var(--cyan);
+  letter-spacing: 1.4px;
+  margin: 0 0 5px;
+}
+
+.topbar h1 { font-size: 25px; margin: 0; }
+
+.top-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.search {
+  width: 230px;
+  height: 40px;
+  border: 1px solid var(--line);
+  background: #0e141e;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 11px;
+  border-radius: 6px;
+}
+.search svg { width: 16px; color: var(--muted); }
+.search input {
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: white;
+  min-width: 0;
+  width: 100%;
+}
+
+.icon-btn,
+.avatar {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line);
+  background: #111827;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.icon-btn svg { width: 18px; }
+
+/* Notification badge */
+.icon-btn span {
+  position: absolute;
+  right: -4px;
+  top: -5px;
+  background: var(--red);
+  border: 2px solid var(--bg);
+  font: 700 9px system-ui;
+  border-radius: 12px;
+  padding: 1px 5px;
+}
+
+.avatar {
+  background: #173640;
+  color: var(--cyan);
+  font: 700 12px system-ui;
+}
+
+
+/* ── Status bar ────────────────────────────────────────────── */
+
+.statusbar {
+  min-height: 38px;
+  background: #0c1720;
+  border-bottom: 1px solid #143345;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 6px 28px;
+  font: 600 11px system-ui;
+  color: #bac6d5;
+}
+.statusbar svg {
+  width: 13px;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+.live  { color: var(--green); }
+.phase { margin-left: auto; color: var(--cyan); }
+
+
+/* ── Content area ──────────────────────────────────────────── */
+
+.content {
+  padding: 22px 28px 40px;
+  max-width: 1900px;
+  margin: auto;
+}
+
+
+/* ── KPI metrics row ───────────────────────────────────────── */
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.metric {
+  min-height: 114px;
+  border: 1px solid var(--line);
+  background: linear-gradient(120deg, var(--panel), #0e1520);
+  padding: 17px 18px;
+  display: flex;
+  justify-content: space-between;
+  transition: .2s transform, .2s border-color;
+}
+.metric:hover {
+  transform: translateY(-2px);
+  border-color: #42536b;
+}
+
+.metric span,
+.metric small {
+  display: block;
+  color: var(--muted);
+  font: 600 11px system-ui;
+}
+
+.metric strong {
+  display: block;
+  font-size: 28px;
+  margin: 9px 0 7px;
+}
+
+.metric > svg { width: 21px; }
+.metric.cyan    > svg { color: var(--cyan); }
+.metric.danger  > svg { color: var(--red); }
+.metric.success > svg { color: var(--green); }
+
+
+/* ── Main content grid ─────────────────────────────────────── */
+
+.grid-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(320px, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+
+/* ── Panel shared styles ───────────────────────────────────── */
+
+.panel {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  padding: 18px;
+}
+
+.panel-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.title-icon {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  background: #112b34;
+  color: var(--cyan);
+  border-radius: 5px;
+}
+.title-icon svg { width: 17px; }
+
+.panel-title h2 { font-size: 15px; margin: 0; }
+.panel-title p {
+  font: 400 11px system-ui;
+  color: var(--muted);
+  margin: 4px 0 0;
+}
+
+.panel-title button {
+  margin-left: auto;
+  border: 0;
+  background: transparent;
+  color: var(--cyan);
+  font: 600 11px system-ui;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.panel-title button svg { width: 14px; }
+
+
+/* ── Crowd pressure chart ──────────────────────────────────── */
+
+.chart-summary {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  height: 158px;
+}
+.chart-summary span,
+.chart-summary small {
+  display: block;
+  color: var(--muted);
+  font: 500 11px system-ui;
+}
+.chart-summary strong {
+  font-size: 52px;
+  display: block;
+  margin: 9px 0 3px;
+}
+
+.chart {
+  min-width: 0;
+  height: 150px;
+}
+
+.recharts-cartesian-axis-tick-value {
+  fill: #65758a;
+  font: 9px system-ui;
+}
+
+
+/* ── Zone density breakdown ────────────────────────────────── */
+
+.zones {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px 20px;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+
+.zones > div > div,
+.resource span {
+  display: flex;
+  justify-content: space-between;
+  font: 600 11px system-ui;
+}
+
+.zones b {
+  font-size: 9px;
+  text-transform: uppercase;
+}
+.zones b.critical { color: #f87171; }
+.zones b.warning  { color: #fbbf24; }
+.zones b.normal   { color: #4ade80; }
+
+/* Progress bar styling */
+progress {
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border: 0;
+  margin: 9px 0;
+  background: #283344;
+}
+progress::-webkit-progress-bar {
+  background: #283344;
+  border-radius: 3px;
+}
+progress::-webkit-progress-value {
+  background: var(--cyan);
+  border-radius: 3px;
+}
+
+.zones small {
+  color: var(--muted);
+  font: 9px system-ui;
+}
+
+/* Zone-specific progress colours */
+.zones > div:first-child progress::-webkit-progress-value  { background: var(--red); }
+.zones > div:nth-child(2) progress::-webkit-progress-value { background: var(--amber); }
+
+
+/* ── Copilot panel ─────────────────────────────────────────── */
+
+.copilot {
+  background: linear-gradient(145deg, #101b29, #111827 60%);
+}
+
+.copilot form label {
+  display: block;
+  font: 600 11px system-ui;
+  color: #bac6d5;
+  margin-bottom: 7px;
+}
+
+.copilot form > div {
+  display: flex;
+  border: 1px solid #34465e;
+  background: #0b111b;
+  border-radius: 5px;
+}
+
+.copilot input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  background: transparent;
+  color: white;
+  padding: 11px;
+  outline: 0;
+}
+
+.copilot form button {
+  width: 42px;
+  border: 0;
+  background: var(--cyan);
+  color: #001318;
+  cursor: pointer;
+}
+.copilot form button:disabled { opacity: .5; }
+
+/* Suggested prompt chips */
+.prompts {
+  display: grid;
+  gap: 7px;
+  margin-top: 16px;
+}
+.prompts span {
+  font: 600 9px system-ui;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.prompts button {
+  min-height: 34px;
+  border: 1px solid var(--line);
+  background: #131e2d;
+  text-align: left;
+  padding: 0 10px;
+  border-radius: 4px;
+  font: 500 11px system-ui;
+  cursor: pointer;
+}
+.prompts button:hover { border-color: var(--cyan); }
+
+/* Copilot answer display */
+.answer {
+  margin-top: 14px;
+  font: 12px/1.5 system-ui;
+}
+.answer > strong { color: var(--cyan); }
+.answer p        { color: #bbc7d6; }
+.answer ul       { padding-left: 18px; }
+.answer small    { color: var(--muted); }
+
+/* Loading skeleton */
+.skeleton {
+  margin-top: 16px;
+  padding: 20px;
+  background: linear-gradient(90deg, #162131, #223148, #162131);
+  background-size: 200%;
+  animation: load 1.5s infinite;
+  font: 12px system-ui;
+  color: #c6d4e7;
+}
+
+
+/* ── Resource readiness ────────────────────────────────────── */
+
+.resources,
+.incidents {
+  min-height: 260px;
+}
+
+.resource {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 8px;
+  align-items: center;
+  margin: 17px 0;
+}
+.resource > svg { width: 17px; color: #9dadc0; }
+.resource b     { color: #dfe7f1; }
+.resource progress { margin: 7px 0 0; }
+
+
+/* ── Incident list ─────────────────────────────────────────── */
+
+.incident {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr) 25px 15px;
+  align-items: center;
+  gap: 10px;
+  border: 0;
+  border-top: 1px solid var(--line);
+  background: transparent;
+  padding: 13px 0;
+  text-align: left;
+  cursor: pointer;
+}
+.incident:hover { background: #151f2e; }
+
+.severity {
+  font: 700 9px system-ui;
+  text-transform: uppercase;
+  border-left: 2px solid;
+  padding-left: 6px;
+}
+.severity.critical { color: #f87171; }
+.severity.medium   { color: #fbbf24; }
+.severity.low      { color: #60a5fa; }
+
+.incident strong,
+.incident small { display: block; }
+.incident strong { font-size: 12px; }
+
+.incident small,
+.incident time {
+  color: var(--muted);
+  font: 10px system-ui;
+  margin-top: 4px;
+}
+
+.incident svg { width: 14px; color: var(--muted); }
+
+
+/* ── Keyframes ─────────────────────────────────────────────── */
+
+@keyframes load { to { background-position: -200%; } }
+
+
+/* ── Responsive: tablet (≤ 1100px) ─────────────────────────── */
+
+@media (max-width: 1100px) {
+  .shell { grid-template-columns: 74px minmax(0, 1fr); }
+  .brand div,
+  .nav span,
+  .system { display: none; }
+  .brand  { padding-left: 3px; }
+  .nav    { justify-content: center; }
+  .metrics { grid-template-columns: repeat(2, 1fr); }
+}
+
+
+/* ── Responsive: mobile (≤ 760px) ──────────────────────────── */
+
+@media (max-width: 760px) {
+  .shell { display: block; }
+
+  .sidebar {
+    position: fixed;
+    z-index: 20;
+    bottom: 0;
+    top: auto;
+    width: 100%;
+    height: 64px;
+    padding: 7px;
+    border-right: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .brand,
+  .system { display: none; }
+
+  .sidebar nav {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .nav { width: 46px; padding: 0; }
+  .nav:nth-child(n+6) { display: none; }
+
+  .topbar { padding: 0 16px; }
+  .search { display: none; }
+
+  .statusbar { padding: 7px 16px; gap: 12px; }
+  .statusbar span:nth-child(2) { display: none; }
+  .phase { font-size: 9px; }
+
+  .content { padding: 14px 12px 80px; }
+
+  .metrics {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .metric {
+    padding: 14px;
+    min-height: 105px;
+  }
+  .metric strong { font-size: 22px; }
+
+  .grid-main { grid-template-columns: 1fr; }
+
+  .zones { grid-template-columns: 1fr; }
+
+  .chart-summary { grid-template-columns: 115px minmax(0, 1fr); }
+
+  /* Reorder panels for mobile: copilot first for quick access */
+  .crowd     { order: 1; }
+  .copilot   { order: 0; }
+  .resources { order: 2; }
+  .incidents { order: 3; }
+}
+
+
+/* ── Reduced motion ────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
