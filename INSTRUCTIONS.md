@@ -1,4 +1,18 @@
-# 📖 ArenaMind AI — File & Folder Working Principles
+<div align="center">
+
+![ArenaMind Instructions Header](https://capsule-render.vercel.app/api?type=waving&color=0:09090B,45:111827,100:F59E0B&height=200&section=header&text=File%20Instructions&fontColor=F8FAFC&fontSize=48&fontAlignY=35&desc=Working%20Principles%20of%20all%20Files%20and%20Folders&descAlignY=57&animation=fadeIn)
+
+</div>
+
+---
+<div align="center">
+
+### 🧭 Navigation Panel
+
+[![Home](https://img.shields.io/badge/Home-README-09090B?style=flat-square&logo=github&logoColor=00E5FF&labelColor=111827)](README.md) [![Architecture](https://img.shields.io/badge/Architecture-Docs-09090B?style=flat-square&logo=diagrams.net&logoColor=00E5FF&labelColor=111827)](ARCHITECTURE.md) [![Deployment](https://img.shields.io/badge/Deployment-Guide-09090B?style=flat-square&logo=docker&logoColor=00E5FF&labelColor=111827)](DEPLOYMENT.md) [![Security](https://img.shields.io/badge/Security-Policy-09090B?style=flat-square&logo=dependabot&logoColor=00E5FF&labelColor=111827)](SECURITY.md) [![Instructions](https://img.shields.io/badge/Instructions-Files-09090B?style=flat-square&logo=readme&logoColor=00E5FF&labelColor=111827)](INSTRUCTIONS.md)
+
+</div>
+---
 
 This document explains the working principles and responsibilities of each file and folder in the ArenaMind AI codebase.
 
@@ -79,3 +93,9 @@ The frontend is built with **Next.js 15 (App Router)**, **React 19**, **TypeScri
 
 ## 🛡️ Reverse Proxy Edge (`infra`)
 - 📌 [nginx.conf](infra/nginx.conf): NginX reverse-proxy configuration. Implements edge rate limits (`limit_req`), security headers (CSP, Frame-Options, XSS protections), and routing rules pointing external traffic to the frontend and backend services.
+
+<div align="center">
+
+![ArenaMind Instructions Footer](https://capsule-render.vercel.app/api?type=waving&color=0:F59E0B,55:111827,100:09090B&height=100&section=footer)
+
+</div>

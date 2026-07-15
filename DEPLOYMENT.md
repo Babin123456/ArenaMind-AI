@@ -1,8 +1,17 @@
-# 🚀 ArenaMind AI — Local Host Setup & Deployment Guide
+<div align="center">
+
+![ArenaMind Deployment Header](https://capsule-render.vercel.app/api?type=waving&color=0:09090B,45:111827,100:22C55E&height=200&section=header&text=Deployment%20Guide&fontColor=F8FAFC&fontSize=48&fontAlignY=35&desc=Local%20Setup%20and%20Cloud%20Production%20Hardening&descAlignY=57&animation=fadeIn)
+
+</div>
 
 ---
-### 🧭 Navigation
-[🏠 Home (README)](README.md) | [🏗️ Architecture](ARCHITECTURE.md) | [🚀 Deployment Guide](DEPLOYMENT.md) | [🛡️ Security Policy](SECURITY.md) | [📖 File Instructions](INSTRUCTIONS.md)
+<div align="center">
+
+### 🧭 Navigation Panel
+
+[![Home](https://img.shields.io/badge/Home-README-09090B?style=flat-square&logo=github&logoColor=00E5FF&labelColor=111827)](README.md) [![Architecture](https://img.shields.io/badge/Architecture-Docs-09090B?style=flat-square&logo=diagrams.net&logoColor=00E5FF&labelColor=111827)](ARCHITECTURE.md) [![Deployment](https://img.shields.io/badge/Deployment-Guide-09090B?style=flat-square&logo=docker&logoColor=00E5FF&labelColor=111827)](DEPLOYMENT.md) [![Security](https://img.shields.io/badge/Security-Policy-09090B?style=flat-square&logo=dependabot&logoColor=00E5FF&labelColor=111827)](SECURITY.md) [![Instructions](https://img.shields.io/badge/Instructions-Files-09090B?style=flat-square&logo=readme&logoColor=00E5FF&labelColor=111827)](INSTRUCTIONS.md)
+
+</div>
 ---
 
 This document provides step-by-step instructions for running ArenaMind AI on your local machine (`localhost`) and outlines production-grade deployment architectures across cloud environments.
@@ -194,3 +203,9 @@ When deploying the API to Google Cloud Run, make sure to adjust:
 - **Maximum concurrency**: 80 or higher (FastAPI handles multiple concurrent connections).
 - **Session affinity**: Enabled (required to route WebSocket heartbeat checks back to the correct instance).
 - **Timeout**: Set to 3600 seconds to prevent premature WebSocket terminations.
+
+<div align="center">
+
+![ArenaMind Deployment Footer](https://capsule-render.vercel.app/api?type=waving&color=0:22C55E,55:111827,100:09090B&height=100&section=footer)
+
+</div>

@@ -1,8 +1,17 @@
-# 🛡️ ArenaMind AI — Security Policy
+<div align="center">
+
+![ArenaMind Security Header](https://capsule-render.vercel.app/api?type=waving&color=0:09090B,45:111827,100:EF4444&height=200&section=header&text=Security%20Policy&fontColor=F8FAFC&fontSize=48&fontAlignY=35&desc=Threat%20Model%20and%20Mitigation%20Controls&descAlignY=57&animation=fadeIn)
+
+</div>
 
 ---
-### 🧭 Navigation
-[🏠 Home (README)](README.md) | [🏗️ Architecture](ARCHITECTURE.md) | [🚀 Deployment Guide](DEPLOYMENT.md) | [🛡️ Security Policy](SECURITY.md) | [📖 File Instructions](INSTRUCTIONS.md)
+<div align="center">
+
+### 🧭 Navigation Panel
+
+[![Home](https://img.shields.io/badge/Home-README-09090B?style=flat-square&logo=github&logoColor=00E5FF&labelColor=111827)](README.md) [![Architecture](https://img.shields.io/badge/Architecture-Docs-09090B?style=flat-square&logo=diagrams.net&logoColor=00E5FF&labelColor=111827)](ARCHITECTURE.md) [![Deployment](https://img.shields.io/badge/Deployment-Guide-09090B?style=flat-square&logo=docker&logoColor=00E5FF&labelColor=111827)](DEPLOYMENT.md) [![Security](https://img.shields.io/badge/Security-Policy-09090B?style=flat-square&logo=dependabot&logoColor=00E5FF&labelColor=111827)](SECURITY.md) [![Instructions](https://img.shields.io/badge/Instructions-Files-09090B?style=flat-square&logo=readme&logoColor=00E5FF&labelColor=111827)](INSTRUCTIONS.md)
+
+</div>
 ---
 
 This document outlines the threat model, mitigation controls, and vulnerability reporting procedures for the ArenaMind AI platform.
@@ -68,3 +77,9 @@ If you identify a security issue, do not open a public GitHub Issue. Report find
 > [!IMPORTANT]
 > Email details to: **security@arenamind.io**
 > Include the version, target component, detailed reproduction steps, and impact. We commit to acknowledging reports within 24 hours.
+
+<div align="center">
+
+![ArenaMind Security Footer](https://capsule-render.vercel.app/api?type=waving&color=0:EF4444,55:111827,100:09090B&height=100&section=footer)
+
+</div>

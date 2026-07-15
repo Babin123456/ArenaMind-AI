@@ -14,8 +14,13 @@
 </div>
 
 ---
-### 🧭 Navigation
-[🏠 Home (README)](README.md) | [🏗️ Architecture](ARCHITECTURE.md) | [🚀 Deployment Guide](DEPLOYMENT.md) | [🛡️ Security Policy](SECURITY.md) | [📖 File Instructions](INSTRUCTIONS.md)
+<div align="center">
+
+### 🧭 Navigation Panel
+
+[![Home](https://img.shields.io/badge/Home-README-09090B?style=flat-square&logo=github&logoColor=00E5FF&labelColor=111827)](README.md) [![Architecture](https://img.shields.io/badge/Architecture-Docs-09090B?style=flat-square&logo=diagrams.net&logoColor=00E5FF&labelColor=111827)](ARCHITECTURE.md) [![Deployment](https://img.shields.io/badge/Deployment-Guide-09090B?style=flat-square&logo=docker&logoColor=00E5FF&labelColor=111827)](DEPLOYMENT.md) [![Security](https://img.shields.io/badge/Security-Policy-09090B?style=flat-square&logo=dependabot&logoColor=00E5FF&labelColor=111827)](SECURITY.md) [![Instructions](https://img.shields.io/badge/Instructions-Files-09090B?style=flat-square&logo=readme&logoColor=00E5FF&labelColor=111827)](INSTRUCTIONS.md)
+
+</div>
 ---
 
 > 🏟️ **Hack2Skill Virtual PromptWars — Challenge 4: Smart Stadiums & Tournament Operations**
@@ -147,7 +152,6 @@ MongoDB is the system of record, Redis supports coordination and live workloads,
 | [Security Policy](SECURITY.md) | Threat model, OWASP controls, access restrictions, and vulnerability reporting |
 | [File & Folder Instructions](INSTRUCTIONS.md) | Working principles and descriptions of all individual files and folders |
 | [MIT License](LICENSE) | Open-source usage and liability terms |
-
 
 ## 🧪 Validation
 
