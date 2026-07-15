@@ -1,5 +1,10 @@
 # 🚀 ArenaMind AI — Local Host Setup & Deployment Guide
 
+---
+### 🧭 Navigation
+[🏠 Home (README)](README.md) | [🏗️ Architecture](ARCHITECTURE.md) | [🚀 Deployment Guide](DEPLOYMENT.md) | [🛡️ Security Policy](SECURITY.md) | [📖 File Instructions](INSTRUCTIONS.md)
+---
+
 This document provides step-by-step instructions for running ArenaMind AI on your local machine (`localhost`) and outlines production-grade deployment architectures across cloud environments.
 
 ---
@@ -32,7 +37,6 @@ This method starts all four services (MongoDB, Redis, FastAPI Backend, Next.js F
    AI_API_KEY=your_gemini_api_key_here
    AI_MODEL=gemini-2.5-flash
    ```
-   *(For details on other environment keys, refer to [ENVIRONMENT_SETUP.md](ENVIRONMENT_SETUP.md))*
 
 #### Step 2: Start the containers
 Run the following command to build and launch all services in detached mode:

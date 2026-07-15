@@ -13,6 +13,11 @@
 
 </div>
 
+---
+### 🧭 Navigation
+[🏠 Home (README)](README.md) | [🏗️ Architecture](ARCHITECTURE.md) | [🚀 Deployment Guide](DEPLOYMENT.md) | [🛡️ Security Policy](SECURITY.md) | [📖 File Instructions](INSTRUCTIONS.md)
+---
+
 > 🏟️ **Hack2Skill Virtual PromptWars — Challenge 4: Smart Stadiums & Tournament Operations**
 
 ArenaMind AI is a role-aware decision-support platform for tournament operations centers. It transforms live crowd, incident, medical, transport, workforce, and sustainability context into explainable recommendations while keeping safety-critical decisions under human control.

@@ -1,10 +1,21 @@
-# 🏗️ ArenaMind Architecture
+# 🏗️ ArenaMind — System Architecture
 
-## System architecture
+---
+### 🧭 Navigation
+[🏠 Home (README)](README.md) | [🏗️ Architecture](ARCHITECTURE.md) | [🚀 Deployment Guide](DEPLOYMENT.md) | [🛡️ Security Policy](SECURITY.md) | [📖 File Instructions](INSTRUCTIONS.md)
+---
+
+This document outlines the system, database, security, and integration architecture for the ArenaMind AI platform.
+
+---
+
+## 🗺️ System Topology
+
+ArenaMind AI is configured as a modular monorepo, separating the Next.js presentation layers from the FastAPI business logic while maintaining strict API contracts.
 
 ```mermaid
 flowchart LR
-  U[Role-based users] --> E[NGINX edge]
+  U[Role-based users] --> E[NGINX edge proxy]
   E --> W[Next.js console]
   E --> A[FastAPI API]
   A --> P[(MongoDB)]
@@ -13,15 +24,11 @@ flowchart LR
   A <--> S[Venue sensors and systems]
 ```
 
-The current repository is a modular monolith, deliberately chosen to keep incident transactions consistent while leaving service boundaries explicit. High-volume ingestion and AI workloads can be extracted behind the same contracts.
+---
 
-## Frontend architecture
+## ⚡ 1. Backend Service Layer
 
-App Router owns routing and server metadata. React Query owns remote state. Feature components consume typed API boundaries; presentation remains independent of transport. CSS variables form the token layer and media queries cover handheld, workstation, and wide command displays.
-
-## Backend architecture
-
-FastAPI routes validate schemas and authorize principals. Services contain use-case logic. Repository adapters own persistence. Provider adapters isolate LLM and venue integrations. Pydantic validates every boundary.
+The FastAPI backend routes validate incoming request schemas using Pydantic contracts and enforce security checks via the JWT/RBAC dependency layer before invoking the appropriate domain services.
 
 ```mermaid
 sequenceDiagram
@@ -38,15 +45,11 @@ sequenceDiagram
   API-->>UI: Validated response and provenance
 ```
 
-## Authentication and request lifecycle
+---
 
-NGINX applies edge controls. FastAPI validates the bearer token, constructs a typed principal, enforces endpoint roles, validates input, invokes a service, validates output, and emits structured telemetry. Production replaces bootstrap authentication with OIDC while preserving principal claims.
+## 📡 2. Real-Time WebSocket Workflows
 
-## Data model
-
-Core production documents are User, Venue, Zone, Sensor, Metric, Incident, Assignment, Shift, TransportStatus, SustainabilityReading, Conversation, CopilotDecision, and AuditEvent. Incident and AuditEvent are append-oriented; high-volume metrics use MongoDB time-series collections and lifecycle policies.
-
-## WebSocket workflow
+Live operational metrics and active incident alerts are streamed in real time to all signed-in dashboards via Redis pub/sub.
 
 ```mermaid
 sequenceDiagram
@@ -60,15 +63,18 @@ sequenceDiagram
   W-->>C: Typed operational update
 ```
 
-## Security architecture
+---
 
-Trust boundaries exist at the edge, identity layer, API schemas, repositories, and AI provider. Least privilege applies by role and venue. Audit events must capture incident and recommendation decisions. Secrets remain outside images. AI context is minimized and prompt output is schema-constrained.
+## 🍃 3. Data Architecture
 
-## Caching and scalability
+- **Primary Database**: MongoDB serves as the persistent system of record. High-importance collections (such as `users`, `incidents`, `assignments`, `audit_events`) use indexed queries for O(1) retrieval.
+- **Cache Store**: Redis acts as an in-memory key-value store cache for roles and dashboard views with automatic expiration (TTL), as well as serving pub/sub channels.
 
-Redis stores short-lived dashboard aggregates, rate-limit counters, and pub/sub events. MongoDB replica-set secondaries can serve approved analytical reads. Celery workers isolate reports, embeddings, and summarization. Stateless web/API replicas scale horizontally behind the edge. Metric collections use time-series bucketing and retention policies.
+---
 
-## Deployment
+## 🚀 4. Production Deployment Topology
+
+The stateless Next.js web application and FastAPI backend containers are replicated horizontally behind edge load balancers, storing persistent assets in managed cloud databases.
 
 ```mermaid
 flowchart TB
@@ -81,10 +87,3 @@ flowchart TB
   API --> WORKERS[Celery workers]
   WORKERS --> OBJ[(S3-compatible storage)]
 ```
-
-## 📖 Related guides
-
-- [Gemini, Groq & MongoDB Setup](AI_PROVIDER_MONGODB_SETUP.md)
-- [MongoDB Data Architecture](DATABASE.md)
-- [Security Policy](SECURITY.md)
-- [Deployment Guide](DEPLOYMENT.md)
