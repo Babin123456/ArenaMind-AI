@@ -138,7 +138,7 @@ docker compose config
 
 The submission should remain below **10 MB**, public, and on **one branch**. Before submitting, verify `git branch --all`, repository visibility, secret scanning, build status, and the public repository link. Challenge rules allow a maximum of three attempts.
 
-Current automated verification includes **7 backend security/RAG/API tests**, **2 frontend component/accessibility tests**, strict TypeScript production compilation, Compose validation, and a production dependency audit with zero known vulnerabilities at the time of verification.
+Current automated verification includes **13 backend security/RAG/API tests**, **4 frontend component/accessibility tests**, strict TypeScript production compilation, Compose validation, and a production dependency audit with zero known vulnerabilities at the time of verification.
 
 ## 💡 Assumptions
 

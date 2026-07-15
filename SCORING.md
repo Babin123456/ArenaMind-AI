@@ -20,7 +20,7 @@ This matrix maps ArenaMind AI to the published Hack2Skill Virtual PromptWars Cha
 
 | Criterion | Implemented evidence | Verification |
 |---|---|---|
-| Testing | Seven API/security/RAG tests, component semantics test, axe serious/critical scan, CI gates, production build | `pytest`; `npm test`; `npm run build` |
+| Testing | 13 API/security/RAG/refresh/validation tests, 4 frontend component/accessibility tests, axe serious/critical scan, CI gates, production build | `pytest`; `npm test`; `npm run build` |
 | Accessibility | Skip link, semantic regions, labeled controls, visible focus, non-color labels, keyboard navigation, reduced motion, large targets, responsive views | Keyboard-only review, `npm test`, browser contrast and screen-reader review |
 
 ## AI decision-support evidence
