@@ -96,7 +96,7 @@ AI_MODEL=gemini-2.5-flash
 
 Open `http://localhost:8080`. API documentation is available at `http://localhost:8080/api/docs`.
 
-> 🔐 Never commit `.env`. Read [Gemini, Groq & MongoDB Setup](AI_PROVIDER_MONGODB_SETUP.md) before deployment.
+> 🔐 Never commit `.env`. For detailed database configurations, secret setups, and local/production guidelines, read the [Deployment Guide](DEPLOYMENT.md).
 
 ## 🏗️ Architecture
 
@@ -115,17 +115,12 @@ MongoDB is the system of record, Redis supports coordination and live workloads,
 
 | Guide | Purpose |
 |---|---|
-| [Architecture](ARCHITECTURE.md) | System boundaries, request flows, scalability, AI and WebSocket design |
-| [Gemini, Groq & MongoDB Setup](AI_PROVIDER_MONGODB_SETUP.md) | API keys, provider selection, MongoDB Atlas/local setup, verification and troubleshooting |
-| [Environment Configuration](ENVIRONMENT_SETUP.md) | Where every `.env` value comes from, safe secret generation, complete examples, and troubleshooting |
-| [API Reference](API.md) | Endpoints, authentication, errors, and Copilot response contract |
-| [Database Guide](DATABASE.md) | MongoDB collections, document shapes, indexes, retention, and relationships |
-| [Security Policy](SECURITY.md) | Threat model, OWASP mitigations, secrets, AI safety, and vulnerability reporting |
-| [Testing Strategy](TESTING.md) | Test pyramid, accessibility, AI evaluation, load checks, and release gates |
-| [Deployment Guide](DEPLOYMENT.md) | Docker, NGINX, CI, production rollout, rollback, and recovery |
-| [Contributing](CONTRIBUTING.md) | Engineering standards and pull request expectations |
-| [MIT License](LICENSE) | Open-source usage terms |
-| [96-Point Evidence Matrix](SCORING.md) | Challenge rubric evidence, verification commands, and submission checks |
+| [Architecture](ARCHITECTURE.md) | System boundaries, sequence flows, database design, and AI models |
+| [Deployment Guide](DEPLOYMENT.md) | Localhost setup, Docker compose steps, manual setup, and cloud architectures |
+| [Security Policy](SECURITY.md) | Threat model, OWASP controls, access restrictions, and vulnerability reporting |
+| [File & Folder Instructions](INSTRUCTIONS.md) | Working principles and descriptions of all individual files and folders |
+| [MIT License](LICENSE) | Open-source usage and liability terms |
+
 
 ## 🧪 Validation
 
