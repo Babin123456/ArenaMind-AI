@@ -15,4 +15,4 @@ Primary risks are stolen operator credentials, cross-venue data access, maliciou
 - Restricted CORS, trusted hosts, security headers, non-root containers, pinned dependencies
 - Secret manager injection and automated rotation; no credentials in source or logs
 
-Run dependency, container, SAST, secret, and IaC scans on every release. Restrict Gemini/Groq keys by project and budget, minimize venue context sent to providers, and review provider retention/training terms. Report vulnerabilities privately to [babinbid05@gmail.com](mailto:babinbid05@gmail.com) with affected version, reproduction, and impact. Do not open public issues for undisclosed vulnerabilities.
+Run dependency, container, SAST, secret, and IaC scans on every release. Restrict Gemini/Groq keys by project and budget, minimize venue context sent to providers, and review provider retention/training terms. Report vulnerabilities privately to security@arenamind.io with affected version, reproduction, and impact. Do not open public issues for undisclosed vulnerabilities.

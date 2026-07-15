@@ -97,7 +97,7 @@ Use this option to run the services directly on your host machine to allow fast 
 1. Navigate to the API folder, create a virtual environment, and install dependencies:
    ```bash
    # Make sure you are in the apps/api folder
-   cd d:/Projects/ArenaMind-AI/apps/api
+   cd apps/api
    
    # Create and activate virtual environment
    python -m venv .venv
@@ -123,7 +123,7 @@ Use this option to run the services directly on your host machine to allow fast 
 1. Open a new terminal, navigate to the web folder, and install dependencies:
    ```bash
    # Make sure you are in the apps/web folder
-   cd d:/Projects/ArenaMind-AI/apps/web
+   cd apps/web
    
    # Install Node packages
    npm install

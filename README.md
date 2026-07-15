@@ -69,7 +69,7 @@ The model cannot directly execute stadium actions. It must return a structured s
 - A Groq or Gemini API key
 - Git and a public GitHub account for challenge submission
 
-### Run with Docker
+### Approach 1: Run with Docker Compose (Recommended)
 
 ```bash
 git clone https://github.com/Babin123456/ArenaMind-AI.git
@@ -94,9 +94,31 @@ AI_API_KEY=your-gemini-key
 AI_MODEL=gemini-2.5-flash
 ```
 
-Open `http://localhost:8080`. API documentation is available at `http://localhost:8080/api/docs`.
+Open `http://localhost:8080` in your browser.
 
-> 🔐 Never commit `.env`. For detailed database configurations, secret setups, and local/production guidelines, read the [Deployment Guide](DEPLOYMENT.md).
+---
+
+### Approach 2: Run Manually (For Active Development)
+
+This approach runs the services directly on your host machine to allow hot-reloading:
+1. Start local MongoDB (`27017`) and Redis (`6379`).
+2. Run the **FastAPI Backend** (`apps/api`):
+   ```bash
+   cd apps/api
+   python -m venv .venv
+   source .venv/bin/activate  # Or .venv\Scripts\activate on Windows
+   pip install -r requirements.txt
+   uvicorn app.main:app --reload
+   ```
+3. Run the **Next.js Frontend** (`apps/web`):
+   ```bash
+   cd apps/web
+   npm install
+   npm run dev
+   ```
+4. Open `http://localhost:3000` in your browser.
+
+> 🔐 Never commit `.env`. For complete environment configurations, secret setup details, and production guidelines, read the [Deployment Guide](DEPLOYMENT.md).
 
 ## 🏗️ Architecture
 
