@@ -272,6 +272,54 @@ Click **Deploy** to trigger the build. Vercel will automatically provision the e
 
 ---
 
+## 🟣 Part 4: Render Deployment Guide (FastAPI Backend)
+
+Follow these exact steps to host the FastAPI Python backend on Render, enabling full persistent execution and secure WebSocket broadcast connections:
+
+### 1️⃣ Create a New Web Service
+1. Log in to your [Render Dashboard](https://render.com) and click **New** -> **Web Service**.
+2. Connect your GitHub repository: `<your-github-username>/ArenaMind-AI`.
+
+### 2️⃣ Configure Web Service Settings
+Configure the parameters exactly as follows:
+
+| Field | Selection / Value |
+| --- | --- |
+| **Name** | `arena-mind-ai-api` |
+| **Region** | Select the region closest to your users (or your MongoDB Atlas instance) |
+| **Branch** | `main` |
+| **Root Directory** | `apps/api` |
+| **Runtime** | `Python 3` |
+| **Build Command** | `pip install -r requirements.txt` |
+| **Start Command** | `python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT` |
+
+### 3️⃣ Add Environment Variables
+Click **Advanced** -> **Add Environment Variable** and configure the variables required by the backend:
+
+* **`MONGODB_URL`** = `your_mongodb_atlas_connection_string`
+* **`MONGODB_DATABASE`** = `arenamind`
+* **`REDIS_URL`** = `your_upstash_redis_connection_string`
+* **`JWT_SECRET`** = `your_generated_64_character_jwt_secret`
+* **`BOOTSTRAP_ADMIN_EMAIL`** = `administrator@arenamind.local`
+* **`BOOTSTRAP_ADMIN_PASSWORD`** = `your_strong_bootstrap_admin_password`
+* **`AI_PROVIDER`** = `groq` *(or `gemini`)*
+* **`AI_API_KEY`** = `your_api_key_value`
+* **`AI_MODEL`** = `llama-3.3-70b-versatile` *(or your gemini model)*
+
+Click **Create Web Service** to launch the backend. Render will deploy the uvicorn server and provide a public URL (e.g. `https://arena-mind-ai-api.onrender.com`).
+
+### 4️⃣ Connect Vercel to the Render Backend
+Now that your API is live, update your Vercel project environment variables to route traffic to Render:
+
+1. Open your Vercel Dashboard and navigate to project **`arena-mind-ai-web`** -> **Settings** -> **Environment Variables**.
+2. Configure the following keys:
+   * **`NEXT_PUBLIC_API_URL`** = `https://arena-mind-ai-api.onrender.com/api/v1`
+   * **`NEXT_PUBLIC_WS_URL`** = `wss://arena-mind-ai-api.onrender.com/ws`
+3. Save the values.
+4. Navigate to the **Deployments** tab on Vercel, click `...` next to the latest build, and select **Redeploy** to compile the Next.js app with the new live URLs.
+
+---
+
 ### 🛡️ Production Hardening Checklist
 
 Before launching in a live stadium tournament, complete these security and operations steps:
