@@ -126,8 +126,7 @@ Use this option to run the services directly on your host machine to allow fast 
    AI_PROVIDER=gemini
    AI_API_KEY=your_gemini_api_key
    AI_MODEL=gemini-2.5-flash
-   AI_BASE_URL=
-   
+   # Next.js Frontend build-time variables (Required for Vercel/production to point to the backend API)
    NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
    NEXT_PUBLIC_WS_URL=ws://localhost:8000/ws
    ```
