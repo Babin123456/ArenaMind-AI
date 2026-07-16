@@ -293,12 +293,38 @@ Configure the parameters exactly as follows:
 | **Build Command** | `pip install -r requirements.txt` |
 | **Start Command** | `python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT` |
 
-### 3️⃣ Add Environment Variables
-Click **Advanced** -> **Add Environment Variable** and configure the variables required by the backend:
+### 3️⃣ Provision Cloud Databases (MongoDB Atlas & Upstash Redis)
 
-* **`MONGODB_URL`** = `your_mongodb_atlas_connection_string`
+Before configuring Render environment variables, you must provision cloud databases that are accessible over the public internet:
+
+#### 🍃 A. MongoDB Atlas (Database Setup & IP Whitelisting)
+1. Log in to [MongoDB Atlas](https://www.mongodb.com/products/platform/atlas-database).
+2. Click **New Project** -> name it `ArenaMind-AI` -> click **Create Project**.
+3. In your project dashboard, click **Build a Database** -> select the **M0 (FREE)** shared tier -> click **Create**.
+4. Set up connection security:
+   * Create a **Database User** (e.g. Username: `babinbid3_db_user`, Password: `your-secure-password`) and click **Create User**.
+   * Under **Network Access**, select **Allow Access from Anywhere** (adds IP `0.0.0.0/0`). *This is required because Render services utilize dynamic IP allocations.*
+5. Click **Finish and Close** -> **Go to Database Overview**.
+6. Click **Connect** -> select **Drivers** (under Connect to your application).
+7. Copy the connection string and replace the password placeholder:
+   ```text
+   mongodb+srv://babinbid3_db_user:<password>@cluster0.xxxxx.mongodb.net/arenamind?retryWrites=true&w=majority&appName=Cluster0
+   ```
+
+#### 🔴 B. Upstash Redis (Cache Setup)
+1. Log in to [Upstash Console](https://upstash.com) (free tier available).
+2. Click **Create Database** -> name it `arenamind-cache` -> select **Redis**.
+3. Under the **Details** tab, copy the **Redis URL** (under the Node.js/Python connection guidelines, starting with `rediss://default:...`).
+
+---
+
+### 4️⃣ Add Environment Variables to Render
+
+Click **Advanced** -> **Add Environment Variable** in your Render service and configure the variables:
+
+* **`MONGODB_URL`** = `your_mongodb_atlas_connection_string` *(obtained in step A7 above)*
 * **`MONGODB_DATABASE`** = `arenamind`
-* **`REDIS_URL`** = `your_upstash_redis_connection_string`
+* **`REDIS_URL`** = `your_upstash_redis_connection_string` *(obtained in step B3 above)*
 * **`JWT_SECRET`** = `your_generated_64_character_jwt_secret`
 * **`BOOTSTRAP_ADMIN_EMAIL`** = `administrator@arenamind.local`
 * **`BOOTSTRAP_ADMIN_PASSWORD`** = `your_strong_bootstrap_admin_password`
@@ -308,7 +334,7 @@ Click **Advanced** -> **Add Environment Variable** and configure the variables r
 
 Click **Create Web Service** to launch the backend. Render will deploy the uvicorn server and provide a public URL (e.g. `https://arena-mind-ai-api.onrender.com`).
 
-### 4️⃣ Connect Vercel to the Render Backend
+### 5️⃣ Connect Vercel to the Render Backend
 Now that your API is live, update your Vercel project environment variables to route traffic to Render:
 
 1. Open your Vercel Dashboard and navigate to project **`arena-mind-ai-web`** -> **Settings** -> **Environment Variables**.
