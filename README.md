@@ -105,6 +105,11 @@ AI_MODEL=gemini-2.5-flash
 
 Open `http://localhost:8080` in your browser.
 
+#### 🔑 Default Local Credentials
+Use these credentials to sign in to the dashboard during local testing:
+- **Email**: `administrator@arenamind.local`
+- **Password**: `ChangeMe-ArenaMind-2026`
+
 ---
 
 ### Approach 2: Run Manually (For Active Development)

@@ -176,7 +176,7 @@ Use this option to run the services directly on your host machine to allow fast 
    npm run dev
    ```
 
-3. Open [http://localhost:3000](http://localhost:3000) in your browser. Sign in using the default admin credentials specified in your `.env`.
+3. Open [http://localhost:3000](http://localhost:3000) in your browser. Sign in using the default admin credentials (Email: `administrator@arenamind.local`, Password: `ChangeMe-ArenaMind-2026`, or the custom values you configured in your `.env`).
 
 ---
 
