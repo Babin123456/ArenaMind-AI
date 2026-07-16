@@ -14,6 +14,8 @@ import {
   Radio,
   Search,
   Shield,
+  Sun,
+  Moon,
   Train,
   Users,
   Waves,
@@ -65,6 +67,154 @@ const NAV_ITEMS = [
   [Compass,       "Venue navigation"],
 ] as const;
 
+/* ── Multilingual Translation Dictionary ───────────────────────────── */
+const TRANSLATIONS: Record<string, Record<string, string>> = {
+  en: {
+    overview: "Overview",
+    crowdIntel: "Crowd intelligence",
+    security: "Security",
+    medical: "Medical",
+    workforce: "Workforce",
+    transport: "Transportation",
+    sustainability: "Sustainability",
+    navigation: "Venue navigation",
+    attendance: "Attendance",
+    activeIncidents: "Active incidents",
+    medianGateWait: "Median gate wait",
+    medicalReadiness: "Medical readiness",
+    opsCommand: "Operations Command",
+    systemNominal: "Connected live",
+    ingressPhase: "Ingress · 36 min to kickoff",
+    stadiumPressure: "Stadium pressure index",
+  },
+  es: {
+    overview: "Resumen",
+    crowdIntel: "Inteligencia de multitudes",
+    security: "Seguridad",
+    medical: "Médico",
+    workforce: "Personal",
+    transport: "Transporte",
+    sustainability: "Sostenibilidad",
+    navigation: "Navegación del estadio",
+    attendance: "Asistencia",
+    activeIncidents: "Incidentes activos",
+    medianGateWait: "Espera media en puertas",
+    medicalReadiness: "Disponibilidad médica",
+    opsCommand: "Comando de Operaciones",
+    systemNominal: "Conectado en vivo",
+    ingressPhase: "Ingreso · 36 min para el saque inicial",
+    stadiumPressure: "Índice de presión del estadio",
+  },
+  fr: {
+    overview: "Aperçu",
+    crowdIntel: "Intelligence de foule",
+    security: "Sécurité",
+    medical: "Médical",
+    workforce: "Effectifs",
+    transport: "Transport",
+    sustainability: "Durabilité",
+    navigation: "Navigation du stade",
+    attendance: "Affluence",
+    activeIncidents: "Incidents actifs",
+    medianGateWait: "Attente moyenne aux portes",
+    medicalReadiness: "Préparation médicale",
+    opsCommand: "Commandement des Opérations",
+    systemNominal: "Connecté en direct",
+    ingressPhase: "Entrée · 36 min avant le coup d'envoi",
+    stadiumPressure: "Indice de pression du stade",
+  },
+  ar: {
+    overview: "نظرة عامة",
+    crowdIntel: "ذكاء الحشود",
+    security: "الأمن",
+    medical: "الطب",
+    workforce: "القوى العاملة",
+    transport: "النقل والمواصلات",
+    sustainability: "الاستدامة",
+    navigation: "ملاحة الملعب",
+    attendance: "الحضور",
+    activeIncidents: "الحوادث النشطة",
+    medianGateWait: "متوسط وقت انتظار البوابات",
+    medicalReadiness: "الجاهزية الطبية",
+    opsCommand: "قيادة العمليات",
+    systemNominal: "متصل مباشر",
+    ingressPhase: "الدخول · ٣٦ دقيقة على البداية",
+    stadiumPressure: "مؤشر ضغط الملعب",
+  },
+  pt: {
+    overview: "Visão Geral",
+    crowdIntel: "Inteligência de público",
+    security: "Segurança",
+    medical: "Médico",
+    workforce: "Equipe",
+    transport: "Transporte",
+    sustainability: "Sustentabilidade",
+    navigation: "Navegação do estádio",
+    attendance: "Público",
+    activeIncidents: "Incidentes ativos",
+    medianGateWait: "Espera média nos portões",
+    medicalReadiness: "Prontidão médica",
+    opsCommand: "Comando de Operações",
+    systemNominal: "Conectado ao vivo",
+    ingressPhase: "Ingresso · 36 min para o pontapé inicial",
+    stadiumPressure: "Índice de pressão do estádio",
+  },
+  de: {
+    overview: "Übersicht",
+    crowdIntel: "Zuschauer-Intelligenz",
+    security: "Sicherheit",
+    medical: "Medizinisch",
+    workforce: "Personal",
+    transport: "Transport",
+    sustainability: "Nachhaltigkeit",
+    navigation: "Stadion-Navigation",
+    attendance: "Zuschauerzahl",
+    activeIncidents: "Aktive Vorfälle",
+    medianGateWait: "Mittlere Wartezeit am Tor",
+    medicalReadiness: "Medizinische Bereitschaft",
+    opsCommand: "Einsatzleitung",
+    systemNominal: "Live verbunden",
+    ingressPhase: "Einlass · 36 Min. bis zum Anpfiff",
+    stadiumPressure: "Stadiondruck-Index",
+  },
+  ja: {
+    overview: "概要",
+    crowdIntel: "群衆インテリジェンス",
+    security: "警備",
+    medical: "医療",
+    workforce: "スタッフ人員",
+    transport: "交通機関",
+    sustainability: "サステナビリティ",
+    navigation: "スタジアム案内",
+    attendance: "来場者数",
+    activeIncidents: "アクティブなインシデント",
+    medianGateWait: "平均ゲート待ち時間",
+    medicalReadiness: "医療対応状態",
+    opsCommand: "運営司令センター",
+    systemNominal: "ライブ接続中",
+    ingressPhase: "入場中 · キックオフまで36分",
+    stadiumPressure: "スタジアム圧力インデックス",
+  },
+  zh: {
+    overview: "概述",
+    crowdIntel: "人群智能",
+    security: "安保",
+    medical: "医疗",
+    workforce: "工作人员",
+    transport: "交通运输",
+    sustainability: "可持续发展",
+    navigation: "场馆导航",
+    attendance: "到场人数",
+    activeIncidents: "活跃事件",
+    medianGateWait: "平均闸机排队时间",
+    medicalReadiness: "医疗准备就绪率",
+    opsCommand: "运营指挥中心",
+    systemNominal: "在线连接",
+    ingressPhase: "入场中 · 距离开球还有36分钟",
+    stadiumPressure: "体育场拥挤度指数",
+  }
+};
+
 /* ── Main dashboard component ──────────────────────────────────────── */
 
 /**
@@ -83,6 +233,14 @@ export function OperationsDashboard() {
   const [query, setQuery] = useState("");
   const [wsConnected, setWsConnected] = useState(false);
   const [crowdIndex, setCrowdIndex] = useState(68);
+  const [lang, setLang] = useState("en");
+  const [theme, setTheme] = useState("dark");
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [notifications, setNotifications] = useState([
+    { id: 1, severity: "critical", text: "North Plaza crowd density exceeded limit", time: "2m" },
+    { id: 2, severity: "medium", text: "Platform 2 transit rail delay increased", time: "8m" },
+    { id: 3, severity: "low", text: "Concourse kiosk power interruption resolved", time: "14m" }
+  ]);
 
   /* Restore session on mount */
   useEffect(() => setAuthenticated(hasSession()), []);
@@ -172,6 +330,31 @@ export function OperationsDashboard() {
     return <LoginScreen onAuthenticated={() => setAuthenticated(true)} />;
   }
 
+  /* Theme toggle effect */
+  useEffect(() => {
+    if (theme === "light") {
+      document.body.classList.add("light");
+    } else {
+      document.body.classList.remove("light");
+    }
+  }, [theme]);
+
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.en;
+
+  const getNavLabel = (label: string) => {
+    switch (label) {
+      case "Overview": return t.overview;
+      case "Crowd intelligence": return t.crowdIntel;
+      case "Security": return t.security;
+      case "Medical": return t.medical;
+      case "Workforce": return t.workforce;
+      case "Transportation": return t.transport;
+      case "Sustainability": return t.sustainability;
+      case "Venue navigation": return t.navigation;
+      default: return label;
+    }
+  };
+
   /* ── Authenticated dashboard ──────────────────────────────────── */
   return (
     <div className="shell">
@@ -196,9 +379,9 @@ export function OperationsDashboard() {
               aria-current={activeView === label ? "page" : undefined}
             >
               <Icon aria-hidden="true" />
-              <span>{label}</span>
+              <span>{getNavLabel(label)}</span>
               {/* Badge for active security incidents */}
-              {label === "Security" && <b>3</b>}
+              {label === "Security" && <b>{notifications.length}</b>}
             </button>
           ))}
         </nav>
@@ -211,7 +394,7 @@ export function OperationsDashboard() {
                 boxShadow: wsConnected ? "0 0 8px var(--green)" : "0 0 8px var(--red)",
               }}
             />
-            {wsConnected ? "Connected live" : "Systems offline"}
+            {wsConnected ? t.systemNominal : "Systems offline"}
           </span>
           <small>{wsConnected ? "Receiving live telemetry" : "Reconnecting to server..."}</small>
         </div>
@@ -223,20 +406,78 @@ export function OperationsDashboard() {
         <header className="topbar">
           <div>
             <p className="eyebrow">MATCHDAY 08 · GROUP STAGE</p>
-            <h1>Operations Command</h1>
+            <h1>{t.opsCommand}</h1>
           </div>
-          <div className="top-actions">
+          <div className="top-actions" style={{ position: "relative" }}>
             {/* Multilingual venue assistance (FIFA WC 2026 requirement) */}
-            <LanguageSelector />
+            <LanguageSelector onLanguageChange={(code) => setLang(code)} />
+            
+            {/* Dark / Light Theme Toggle */}
+            <button 
+              className="icon-btn" 
+              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            >
+              {theme === "dark" ? <Sun /> : <Moon />}
+            </button>
+
             <label className="search">
               <Search aria-hidden="true" />
               <span className="sr-only">Search operations</span>
               <input placeholder="Search operations" />
             </label>
-            <button className="icon-btn" aria-label="Notifications, 3 unread">
+
+            {/* Notification button */}
+            <button 
+              className="icon-btn" 
+              aria-label={`Notifications, ${notifications.length} unread`}
+              onClick={() => setShowNotifications(!showNotifications)}
+            >
               <Bell />
-              <span>3</span>
+              {notifications.length > 0 && <span>{notifications.length}</span>}
             </button>
+
+            {/* Notifications Dropdown Panel */}
+            {showNotifications && (
+              <div className="notifications-dropdown" style={{
+                position: "absolute",
+                top: "54px",
+                right: "50px",
+                background: "var(--panel)",
+                border: "1px solid var(--line)",
+                borderRadius: "10px",
+                width: "320px",
+                boxShadow: "0 10px 25px rgba(0,0,0,0.3)",
+                zIndex: 100,
+                padding: "16px",
+                color: "var(--text)"
+              }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px", borderBottom: "1px solid var(--line)", paddingBottom: "8px" }}>
+                  <strong style={{ fontSize: "14px", fontFamily: "'Outfit', sans-serif" }}>Operations Alerts</strong>
+                  {notifications.length > 0 && (
+                    <button 
+                      onClick={() => setNotifications([])} 
+                      style={{ background: "transparent", border: 0, color: "var(--cyan)", fontSize: "11px", cursor: "pointer", fontWeight: 700 }}
+                    >
+                      Clear All
+                    </button>
+                  )}
+                </div>
+                {notifications.length === 0 ? (
+                  <p style={{ margin: "16px 0", fontSize: "12px", color: "var(--muted)", textAlign: "center" }}>No active alerts nominal state</p>
+                ) : (
+                  <div style={{ display: "grid", gap: "10px" }}>
+                    {notifications.map(n => (
+                      <div key={n.id} style={{ fontSize: "12px", borderLeft: `3px solid ${n.severity === 'critical' ? 'var(--red)' : n.severity === 'medium' ? 'var(--amber)' : 'var(--cyan)'}`, paddingLeft: "8px", paddingBottom: "4px" }}>
+                        <div style={{ fontWeight: 600, color: "var(--text)" }}>{n.text}</div>
+                        <small style={{ color: "var(--muted)" }}>{n.time} ago</small>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
             <button
               className="avatar"
               aria-label="Sign out"
@@ -261,7 +502,7 @@ export function OperationsDashboard() {
             <Clock />
             19:24 local
           </span>
-          <span className="phase">Ingress · 36 min to kickoff</span>
+          <span className="phase">{t.ingressPhase}</span>
         </section>
 
         {/* Dashboard content */}
@@ -278,7 +519,7 @@ export function OperationsDashboard() {
           <section className="role-strip" aria-label="Role dashboard context">
             <div>
               <span>Current workspace</span>
-              <strong>{activeView}</strong>
+              <strong>{getNavLabel(activeView)}</strong>
             </div>
             {data.focus.map((item) => (
               <span className="focus-chip" key={item}>
@@ -291,28 +532,28 @@ export function OperationsDashboard() {
           <section className="metrics" aria-label="Key operational metrics">
             <MetricCard
               icon={Users}
-              label="Attendance"
+              label={t.attendance}
               value={data.attendance.toLocaleString()}
               detail={`${Math.round((data.attendance / data.capacity) * 100)}% of capacity`}
               tone="cyan"
             />
             <MetricCard
               icon={AlertTriangle}
-              label="Active incidents"
+              label={t.activeIncidents}
               value={String(data.active_incidents)}
               detail="1 requires attention"
               tone="danger"
             />
             <MetricCard
               icon={Clock}
-              label="Median gate wait"
+              label={t.medianGateWait}
               value={`${data.gate_wait_minutes} min`}
               detail="1.8 min below target"
               tone="success"
             />
             <MetricCard
               icon={HeartPulse}
-              label="Medical readiness"
+              label={t.medicalReadiness}
               value={`${data.medical_readiness}%`}
               detail="12 teams available"
               tone="success"
@@ -336,7 +577,7 @@ export function OperationsDashboard() {
               />
               <div className="chart-summary">
                 <div>
-                  <span>Stadium pressure index</span>
+                  <span>{t.stadiumPressure}</span>
                   <strong>{crowdIndex}</strong>
                   <small>
                     {crowdIndex > 80

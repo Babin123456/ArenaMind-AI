@@ -892,3 +892,136 @@ main { min-width: 0; }
     transition-duration: .01ms !important;
   }
 }
+
+/* ── Light Mode Override Styling ───────────────────────────── */
+body.light {
+  --bg:         #f8fafc;
+  --panel:      #ffffff;
+  --panel-glow: rgba(0, 0, 0, 0.01);
+  --line:       #cbd5e1;
+  --text:       #0f172a;
+  --muted:      #475569;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(217, 70, 239, 0.02) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(0, 229, 255, 0.02) 0%, transparent 45%);
+}
+
+body.light .sidebar {
+  background: #f1f5f9;
+}
+body.light .nav {
+  color: #475569;
+}
+body.light .nav:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+body.light .nav.active {
+  background: rgba(0, 229, 255, 0.08);
+  color: #0284c7;
+  box-shadow: inset 4px 0 #0284c7;
+}
+body.light .brand strong {
+  background: linear-gradient(to right, #0f172a, #475569);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+body.light .search {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+body.light .search input {
+  color: #0f172a;
+}
+body.light .icon-btn,
+body.light .avatar {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+body.light .avatar {
+  background: rgba(0, 229, 255, 0.15);
+  color: #0369a1;
+}
+body.light .statusbar {
+  background: #e2e8f0;
+  border-bottom-color: #cbd5e1;
+  color: #334155;
+}
+body.light .role-strip {
+  background: rgba(241, 245, 249, 0.8);
+  border-color: #cbd5e1;
+}
+body.light .role-strip strong {
+  color: #0284c7;
+}
+body.light .focus-chip {
+  background: #e2e8f0;
+  border-color: #cbd5e1;
+  color: #334155;
+}
+body.light .metric {
+  background: linear-gradient(135deg, #ffffff, #f1f5f9);
+  border-color: #cbd5e1;
+}
+body.light .metric strong {
+  color: #0f172a;
+}
+body.light .copilot input {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+body.light .prompts button {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+body.light .prompts button:hover {
+  background: rgba(0, 229, 255, 0.1);
+  color: #0f172a;
+}
+body.light .incident {
+  border-top-color: #e2e8f0;
+}
+body.light .incident:hover {
+  background: rgba(226, 232, 240, 0.5);
+}
+body.light .incident strong {
+  color: #0f172a;
+}
+body.light .title-icon {
+  background: rgba(0, 229, 255, 0.15);
+  color: #0369a1;
+}
+body.light .zones > div {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+body.light .chart-summary strong {
+  color: #0f172a;
+}
+body.light .topbar h1 {
+  background: linear-gradient(135deg, #0f172a, #475569);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+body.light .login-panel {
+  background: #ffffff;
+  border-color: #cbd5e1;
+}
+body.light .login-panel h1 {
+  color: #0f172a;
+}
+body.light .login-copy {
+  color: #475569;
+}
+body.light .login-panel label {
+  color: #334155;
+}
+body.light .login-panel input {
+  background: #f1f5f9;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+body.light .login-panel input:focus {
+  border-color: var(--cyan);
+}
+

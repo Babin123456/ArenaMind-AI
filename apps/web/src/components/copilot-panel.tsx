@@ -76,6 +76,12 @@ export function CopilotPanel({ query, setQuery, onAsk, state }: CopilotPanelProp
         <div className="skeleton" aria-live="polite">
           Analyzing operational context…
         </div>
+      ) : state.error ? (
+        <div className="answer" aria-live="polite" style={{ borderColor: "var(--red)", background: "rgba(239, 68, 68, 0.05)" }}>
+          <strong style={{ color: "var(--red)" }}>Query Failed</strong>
+          <p style={{ color: "#fca5a5" }}>{state.error.message}</p>
+          <small style={{ color: "var(--red)", fontWeight: 700 }}>Connection or provider error</small>
+        </div>
       ) : state.data ? (
         <div className="answer" aria-live="polite">
           <strong>{state.data.summary}</strong>
