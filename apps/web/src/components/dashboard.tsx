@@ -325,11 +325,6 @@ export function OperationsDashboard() {
     }
   }
 
-  /* ── Authentication boundary ──────────────────────────────────── */
-  if (!authenticated) {
-    return <LoginScreen onAuthenticated={() => setAuthenticated(true)} />;
-  }
-
   /* Theme toggle effect */
   useEffect(() => {
     if (theme === "light") {
@@ -338,6 +333,11 @@ export function OperationsDashboard() {
       document.body.classList.remove("light");
     }
   }, [theme]);
+
+  /* ── Authentication boundary ──────────────────────────────────── */
+  if (!authenticated) {
+    return <LoginScreen onAuthenticated={() => setAuthenticated(true)} />;
+  }
 
   const t = TRANSLATIONS[lang] || TRANSLATIONS.en;
 
