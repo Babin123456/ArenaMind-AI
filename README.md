@@ -152,6 +152,8 @@ You can start the required databases in one of two ways:
 
 4. Open `http://localhost:3000` in your browser.
 
+> 🎨 **Branding & Theme**: The application's favicon is configured using the [favicon.png](favicon.png) asset, which is dynamically loaded by Next.js from [apps/web/src/app/icon.png](apps/web/src/app/icon.png).
+
 > 🔐 Never commit `.env`. For complete environment configurations, secret setup details, and production guidelines, read the [Deployment Guide](DEPLOYMENT.md).
 
 ## 🏗️ Architecture

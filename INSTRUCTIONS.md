@@ -5,6 +5,7 @@
 </div>
 
 ---
+
 <div align="center">
 
 ### 🧭 Navigation Panel
@@ -12,7 +13,6 @@
 [![Home](https://img.shields.io/badge/Home-README-09090B?style=flat-square&logo=github&logoColor=00E5FF&labelColor=111827)](README.md) [![Architecture](https://img.shields.io/badge/Architecture-Docs-09090B?style=flat-square&logo=diagrams.net&logoColor=00E5FF&labelColor=111827)](ARCHITECTURE.md) [![Deployment](https://img.shields.io/badge/Deployment-Guide-09090B?style=flat-square&logo=docker&logoColor=00E5FF&labelColor=111827)](DEPLOYMENT.md) [![Security](https://img.shields.io/badge/Security-Policy-09090B?style=flat-square&logo=dependabot&logoColor=00E5FF&labelColor=111827)](SECURITY.md) [![Instructions](https://img.shields.io/badge/Instructions-Files-09090B?style=flat-square&logo=readme&logoColor=00E5FF&labelColor=111827)](INSTRUCTIONS.md)
 
 </div>
----
 
 This document explains the working principles and responsibilities of each file and folder in the ArenaMind AI codebase.
 
@@ -26,6 +26,7 @@ ArenaMind-AI/
 │   ├── api/          # FastAPI Python backend (services, logic, DB access, and tests)
 │   └── web/          # Next.js 15 TypeScript frontend (operations dashboard)
 ├── infra/            # Production Nginx reverse-proxy edge configuration
+├── favicon.png       # Original web application favicon image asset
 └── *.md              # Root documentation files
 ```
 
@@ -36,6 +37,7 @@ ArenaMind-AI/
 The backend is built with **FastAPI** and uses **Pydantic** for schema validation, **PyJWT** for token security, **pymongo** for async MongoDB access, and **redis** for caching.
 
 ### 📁 `apps/api/app/` (Application Core)
+
 - 📌 [__init__.py](apps/api/app/__init__.py): Initializes the Python package.
 - 📌 [config.py](apps/api/app/config.py): Exposes settings validated by `pydantic-settings`. Loads environment variables from the `.env` file, enforces required values in production, and validates that `AI_PROVIDER` is either `gemini` or `groq`.
 - 📌 [main.py](apps/api/app/main.py): Entry point for the FastAPI server. Sets up CORS middleware, rate limiters (`slowapi`), API route registrations, startup database seeding hook, and the real-time `/ws/operations` WebSocket endpoint for incident push broadcasts.
@@ -52,10 +54,12 @@ The backend is built with **FastAPI** and uses **Pydantic** for schema validatio
   - `CopilotService`: Retrieves evidence, checks for prompt injection, calls LLM providers (Gemini/Groq), and returns advisory recommendations.
 
 ### 📁 `apps/api/tests/` (Test Suite)
+
 - 📌 [test_api.py](apps/api/tests/test_api.py): Contains 13 unit and integration tests. Covers authentication, token refresh, RBAC, input validation (invalid categories, short fields), prompt injection rejections, and copilot structured fallbacks.
 - 📌 [pytest.ini](apps/api/pytest.ini): Configures pytest options, default search directories, and async test markers.
 
 ### 📁 Configuration & Docker
+
 - 📌 [Dockerfile](apps/api/Dockerfile): Multi-stage container build file for production-ready, minimal API images running as a non-root user.
 - 📌 [requirements.txt](apps/api/requirements.txt): Lists production Python dependencies.
 - 📌 [requirements-dev.txt](apps/api/requirements-dev.txt): Lists development dependencies (like `pytest` and `pytest-asyncio`).
@@ -67,6 +71,7 @@ The backend is built with **FastAPI** and uses **Pydantic** for schema validatio
 The frontend is built with **Next.js 15 (App Router)**, **React 19**, **TypeScript**, and **Tailwind-free Vanilla CSS**.
 
 ### 📁 `apps/web/src/components/` (React Components)
+
 - 📌 [dashboard.tsx](apps/web/src/components/dashboard.tsx): Main dashboard shell. Handles sidebar navigation routing, fetches live operational data, hooks up WebSocket state, and organizes the panels.
 - 📌 [login-screen.tsx](apps/web/src/components/login-screen.tsx): Authentication form boundary. Captures credentials, displays form errors, and manages session storage tokens.
 - 📌 [copilot-panel.tsx](apps/web/src/components/copilot-panel.tsx): Copilot interface. Displays query inputs, loading skeletons, confidence levels, reasoning steps, recommendations, and source grounding.
@@ -80,18 +85,22 @@ The frontend is built with **Next.js 15 (App Router)**, **React 19**, **TypeScri
 - 📌 [dashboard.test.tsx](apps/web/src/components/dashboard.test.tsx): Next.js frontend vitest suite containing accessibility scans (axe-core) and component semantic tests.
 
 ### 📁 `apps/web/src/app/` (Next.js App Routing)
+
 - 📌 [layout.tsx](apps/web/src/app/layout.tsx): Top-level document template configuring Google Fonts Inter, global HTML, and metadata.
 - 📌 [page.tsx](apps/web/src/app/page.tsx): Main page entry rendering the `<OperationsDashboard />` component.
 - 📌 [globals.css](apps/web/src/app/globals.css): Clean, readable global CSS stylesheets detailing tokens, layout systems, sidebar, header styles, and charts.
 - 📌 [motion.css](apps/web/src/app/motion.css): Holds custom visual design enhancements (animations, overlays, grids, backgrounds) separating motion behaviors from core layout.
+- 📌 [icon.png](apps/web/src/app/icon.png): The favicon asset loaded by Next.js for all page requests.
 
 ### 📁 `apps/web/src/lib/` & `apps/web/src/test/`
+
 - 📌 [api.ts](apps/web/src/lib/api.ts): Central API client for sending authenticated JSON requests, containing session lifecycle helpers and a mock fallback structure.
 - 📌 [setup.ts](apps/web/src/test/setup.ts): Configures testing environment (e.g. extending Jest Matchers for Vitest).
 
 ---
 
 ## 🛡️ Reverse Proxy Edge (`infra`)
+
 - 📌 [nginx.conf](infra/nginx.conf): NginX reverse-proxy configuration. Implements edge rate limits (`limit_req`), security headers (CSP, Frame-Options, XSS protections), and routing rules pointing external traffic to the frontend and backend services.
 
 <div align="center">

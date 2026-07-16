@@ -184,6 +184,8 @@ Use this option to run the services directly on your host machine to allow fast 
    ```
 
 3. Open [http://localhost:3000](http://localhost:3000) in your browser. Sign in using the default admin credentials (Email: `administrator@arenamind.local`, Password: `ChangeMe-ArenaMind-2026`, or the custom values you configured in your `.env`).
+   
+   > 🎨 **Branding & Theme**: The application's favicon is configured using the [favicon.png](favicon.png) asset, which is dynamically loaded by Next.js from [apps/web/src/app/icon.png](apps/web/src/app/icon.png).
 
 ---
 
