@@ -293,10 +293,12 @@ Click **Deploy** to trigger the build. Vercel will automatically build the Next.
 Follow these exact steps to host the FastAPI Python backend on Render, enabling full persistent execution and secure WebSocket broadcast connections:
 
 ### 1️⃣ Create a New Web Service
+
 1. Log in to your [Render Dashboard](https://render.com) and click **New** -> **Web Service**.
 2. Connect your GitHub repository: `<your-github-username>/ArenaMind-AI`.
 
 ### 2️⃣ Configure Web Service Settings
+
 Configure the parameters exactly as follows:
 
 | Field | Selection / Value |
@@ -314,6 +316,7 @@ Configure the parameters exactly as follows:
 Before configuring Render environment variables, you must provision cloud databases that are accessible over the public internet:
 
 #### 🍃 A. MongoDB Atlas (Database Setup & IP Whitelisting)
+
 1. Log in to [MongoDB Atlas](https://www.mongodb.com/products/platform/atlas-database).
 2. Click **New Project** -> name it `ArenaMind-AI` -> click **Create Project**.
 3. In your project dashboard, click **Build a Database** -> select the **M0 (FREE)** shared tier -> click **Create**.
@@ -323,11 +326,13 @@ Before configuring Render environment variables, you must provision cloud databa
 5. Click **Finish and Close** -> **Go to Database Overview**.
 6. Click **Connect** -> select **Drivers** (under Connect to your application).
 7. Copy the connection string and replace the password placeholder:
+
    ```text
    mongodb+srv://babinbid3_db_user:<password>@cluster0.xxxxx.mongodb.net/arenamind?retryWrites=true&w=majority&appName=Cluster0
    ```
 
 #### 🔴 B. Upstash Redis (Cache Setup)
+
 1. Log in to [Upstash Console](https://upstash.com) (free tier available).
 2. Click **Create Database** -> name it `arenamind-cache` -> select **Redis**.
 3. Under the **Details** tab, copy the **Redis URL** (under the Node.js/Python connection guidelines, starting with `rediss://default:...`).
@@ -351,6 +356,7 @@ Click **Advanced** -> **Add Environment Variable** in your Render service and co
 Click **Create Web Service** to launch the backend. Render will deploy the uvicorn server and provide a public URL (e.g. `https://arena-mind-ai-api.onrender.com`).
 
 ### 5️⃣ Connect Vercel to the Render Backend
+
 Now that your API is live, update your Vercel project environment variables to route traffic to Render:
 
 1. Open your Vercel Dashboard and navigate to project **`arena-mind-ai-web`** -> **Settings** -> **Environment Variables**.
@@ -373,18 +379,24 @@ Never upload `.env` files to production servers.
 - Deploy the database strings, AI API keys, and JWT secrets directly into **GCP Secret Manager** or **Vercel Environment Secrets**.
 - Bind those secrets to Google Cloud Run as environment variables at runtime.
 
-##### 🔐 How to Generate a Secure JWT Secret
+#### 🔐 How to Generate a Secure JWT Secret
+
 A JWT secret must be a strong, cryptographically secure random value (at least 32 bytes/256 bits, represented as a hex string). You can generate one instantly using any of the following terminal commands:
 
 * **Using Python** (Runs anywhere Python is installed):
+
   ```bash
   python -c "import secrets; print(secrets.token_hex(32))"
   ```
+
 * **Using OpenSSL** (Available natively on macOS, Linux, and Windows Git Bash):
+
   ```bash
   openssl rand -hex 32
   ```
+
 * **Using Node.js** (Runs anywhere Node is installed):
+
   ```bash
   node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
   ```
@@ -392,17 +404,23 @@ A JWT secret must be a strong, cryptographically secure random value (at least 3
 Copy the resulting 64-character hex string and paste it as the value for `JWT_SECRET` in your `.env` file or Vercel/GCP environment variables.
 
 #### 🔐 How to Set or Generate the Bootstrap Admin Password
+
 The bootstrap admin password is used to seed the initial administrator account on database startup. It must be at least 12 characters. You can either write your own strong password of your choice, or generate a cryptographically secure random password using any of the following terminal commands:
 
 * **Using Python** (Runs anywhere Python is installed):
+
   ```bash
   python -c "import secrets; print(secrets.token_urlsafe(16))"
   ```
+
 * **Using OpenSSL** (Available natively on macOS, Linux, and Windows Git Bash):
+
   ```bash
   openssl rand -base64 12
   ```
+
 * **Using Node.js** (Runs anywhere Node is installed):
+
   ```bash
   node -e "console.log(require('crypto').randomBytes(12).toString('base64'))"
   ```
