@@ -32,9 +32,13 @@ async def lifespan(_: FastAPI):
 settings = get_settings()
 app = FastAPI(title=settings.app_name, version="1.0.0", lifespan=lifespan,
               docs_url="/api/docs", openapi_url="/api/openapi.json")
-app.add_middleware(CORSMiddleware, allow_origins=settings.origins, allow_credentials=True,
-                   allow_methods=["GET", "POST", "PATCH"], allow_headers=["Authorization", "Content-Type"])
-app.add_middleware(TrustedHostMiddleware, allowed_hosts=["localhost", "127.0.0.1", "api", "testserver"])
+app.add_middleware(CORSMiddleware,
+                   allow_origins=settings.origins,
+                   allow_origin_regex=r"https://.*\.vercel\.app",
+                   allow_credentials=True,
+                   allow_methods=["*"],
+                   allow_headers=["*"])
+app.add_middleware(TrustedHostMiddleware, allowed_hosts=["*"])
 limiter = Limiter(key_func=get_remote_address, default_limits=["120/minute"])
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
