@@ -344,6 +344,13 @@ Click **Advanced** -> **Add Environment Variable** in your Render service and co
 * **`AI_API_KEY`** = `your_api_key_value`
 * **`AI_MODEL`** = `llama-3.3-70b-versatile` *(or your gemini model)*
 
+> [!WARNING]
+> **Admin Seeding & Password Changes**: The admin user (`administrator@arenamind.local`) is only created in your database **on the very first startup** of the API if the user list is empty.
+> If you decide to change or rotate `BOOTSTRAP_ADMIN_PASSWORD` in Render/Vercel settings later, the backend will **not** overwrite the existing user's password. 
+> To update the password, you must either:
+> 1. Delete the user from the `users` collection in MongoDB Atlas (forcing the API to re-seed it on the next boot).
+> 2. Or manually update the hashed password directly in MongoDB.
+
 Click **Create Web Service** to launch the backend. Render will deploy the uvicorn server and provide a public URL (e.g. `https://arena-mind-ai-api.onrender.com`).
 
 ---
