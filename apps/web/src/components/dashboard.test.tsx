@@ -5,7 +5,7 @@
  * axe-core automated scanning, and component extraction integrity.
  */
 
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import React from "react";
 import { describe, expect, it } from "vitest";
 import axe from "axe-core";
@@ -40,5 +40,19 @@ describe("OperationsDashboard", () => {
     expect(
       screen.getByText(/access and actions are recorded/i)
     ).toBeInTheDocument();
+  });
+
+  it("allows autofilling the deployed demo credentials on the login screen", () => {
+    render(<Providers><OperationsDashboard /></Providers>);
+    const autofillBtn = screen.getByRole("button", { name: /autofill/i });
+    expect(autofillBtn).toBeInTheDocument();
+    
+    const emailInput = screen.getByLabelText("Email");
+    const passwordInput = screen.getByLabelText("Password");
+    expect(passwordInput).toHaveValue("");
+    
+    fireEvent.click(autofillBtn);
+    expect(emailInput).toHaveValue("administrator@arenamind.local");
+    expect(passwordInput).toHaveValue("MxgUGVqZuB5rG8kqrGA-Zg");
   });
 });

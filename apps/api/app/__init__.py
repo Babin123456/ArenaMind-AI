@@ -1,2 +1,1 @@
 """ArenaMind API package."""
-
