@@ -296,6 +296,24 @@ A JWT secret must be a strong, cryptographically secure random value (at least 3
 
 Copy the resulting 64-character hex string and paste it as the value for `JWT_SECRET` in your `.env` file or Vercel/GCP environment variables.
 
+#### 🔐 How to Set or Generate the Bootstrap Admin Password
+The bootstrap admin password is used to seed the initial administrator account on database startup. It must be at least 12 characters. You can either write your own strong password of your choice, or generate a cryptographically secure random password using any of the following terminal commands:
+
+* **Using Python** (Runs anywhere Python is installed):
+  ```bash
+  python -c "import secrets; print(secrets.token_urlsafe(16))"
+  ```
+* **Using OpenSSL** (Available natively on macOS, Linux, and Windows Git Bash):
+  ```bash
+  openssl rand -base64 12
+  ```
+* **Using Node.js** (Runs anywhere Node is installed):
+  ```bash
+  node -e "console.log(require('crypto').randomBytes(12).toString('base64'))"
+  ```
+
+Copy the generated random password and paste it as the value for `BOOTSTRAP_ADMIN_PASSWORD` in your `.env` file or Vercel/GCP environment variables.
+
 #### 2. Network Isolation (VPC)
 
 - Restrict MongoDB Atlas and Upstash Redis access using IP Access Lists or VPC Peering.
