@@ -278,6 +278,24 @@ Never upload `.env` files to production servers.
 - Deploy the database strings, AI API keys, and JWT secrets directly into **GCP Secret Manager** or **Vercel Environment Secrets**.
 - Bind those secrets to Google Cloud Run as environment variables at runtime.
 
+##### 🔐 How to Generate a Secure JWT Secret
+A JWT secret must be a strong, cryptographically secure random value (at least 32 bytes/256 bits, represented as a hex string). You can generate one instantly using any of the following terminal commands:
+
+* **Using Python** (Runs anywhere Python is installed):
+  ```bash
+  python -c "import secrets; print(secrets.token_hex(32))"
+  ```
+* **Using OpenSSL** (Available natively on macOS, Linux, and Windows Git Bash):
+  ```bash
+  openssl rand -hex 32
+  ```
+* **Using Node.js** (Runs anywhere Node is installed):
+  ```bash
+  node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+  ```
+
+Copy the resulting 64-character hex string and paste it as the value for `JWT_SECRET` in your `.env` file or Vercel/GCP environment variables.
+
 #### 2. Network Isolation (VPC)
 
 - Restrict MongoDB Atlas and Upstash Redis access using IP Access Lists or VPC Peering.
