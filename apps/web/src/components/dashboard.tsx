@@ -159,10 +159,12 @@ export function OperationsDashboard() {
 
   const data = dashboard.data ?? fallbackDashboard;
 
-  /** Submit the copilot question (minimum 3 characters). */
-  function submitCopilot(event: FormEvent) {
-    event.preventDefault();
-    if (query.trim().length >= 3) copilot.mutate(query.trim());
+  /** Submit the copilot question directly. */
+  function handleAsk(text: string) {
+    if (text.trim().length >= 3) {
+      setQuery(text);
+      copilot.mutate(text.trim());
+    }
   }
 
   /* ── Authentication boundary ──────────────────────────────────── */
@@ -413,7 +415,7 @@ export function OperationsDashboard() {
             <CopilotPanel
               query={query}
               setQuery={setQuery}
-              submit={submitCopilot}
+              onAsk={handleAsk}
               state={copilot}
             />
 

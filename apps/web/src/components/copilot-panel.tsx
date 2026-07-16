@@ -7,9 +7,11 @@ import { PanelTitle } from "./panel-title";
 
 /** Suggested prompts shown when the copilot is idle. */
 const SUGGESTED_PROMPTS = [
-  "Show overcrowded gates",
-  "Predict congestion",
-  "Summarize incidents",
+  "Optimize exit flow for North Plaza after Match 14",
+  "Plan route for wheelchair access from Gate C to Suite 204",
+  "Verify energy optimization restrictions for medical fridges",
+  "Predict transit shuttle wait times under heavy rail delay",
+  "Translate concourse safety announcement to Spanish and French",
 ] as const;
 
 interface CopilotPanelProps {
@@ -17,8 +19,8 @@ interface CopilotPanelProps {
   query: string;
   /** Setter for the query input value. */
   setQuery: (value: string) => void;
-  /** Form submission handler. */
-  submit: (event: FormEvent) => void;
+  /** Direct query submission handler. */
+  onAsk: (text: string) => void;
   /** Mutation state from React Query (pending, data, error). */
   state: {
     isPending: boolean;
@@ -38,7 +40,12 @@ interface CopilotPanelProps {
  * Suggested prompts are shown when idle to guide operators toward
  * common operational queries.
  */
-export function CopilotPanel({ query, setQuery, submit, state }: CopilotPanelProps) {
+export function CopilotPanel({ query, setQuery, onAsk, state }: CopilotPanelProps) {
+  function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+    onAsk(query);
+  }
+
   return (
     <section className="panel copilot">
       <PanelTitle
@@ -48,7 +55,7 @@ export function CopilotPanel({ query, setQuery, submit, state }: CopilotPanelPro
       />
 
       {/* Query input */}
-      <form onSubmit={submit}>
+      <form onSubmit={handleSubmit}>
         <label htmlFor="copilot">Ask about current operations</label>
         <div>
           <input
@@ -85,9 +92,9 @@ export function CopilotPanel({ query, setQuery, submit, state }: CopilotPanelPro
         </div>
       ) : (
         <div className="prompts">
-          <span>Suggested</span>
+          <span>Suggested Operational Queries</span>
           {SUGGESTED_PROMPTS.map((prompt) => (
-            <button key={prompt} onClick={() => setQuery(prompt)}>
+            <button key={prompt} onClick={() => onAsk(prompt)}>
               {prompt}
             </button>
           ))}
