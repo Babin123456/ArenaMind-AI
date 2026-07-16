@@ -21,7 +21,6 @@
 [![Home](https://img.shields.io/badge/Home-README-09090B?style=flat-square&logo=github&logoColor=00E5FF&labelColor=111827)](README.md) [![Architecture](https://img.shields.io/badge/Architecture-Docs-09090B?style=flat-square&logo=diagrams.net&logoColor=00E5FF&labelColor=111827)](ARCHITECTURE.md) [![Deployment](https://img.shields.io/badge/Deployment-Guide-09090B?style=flat-square&logo=docker&logoColor=00E5FF&labelColor=111827)](DEPLOYMENT.md) [![Security](https://img.shields.io/badge/Security-Policy-09090B?style=flat-square&logo=dependabot&logoColor=00E5FF&labelColor=111827)](SECURITY.md) [![Instructions](https://img.shields.io/badge/Instructions-Files-09090B?style=flat-square&logo=readme&logoColor=00E5FF&labelColor=111827)](INSTRUCTIONS.md)
 
 </div>
----
 
 > 🏟️ **Hack2Skill Virtual PromptWars — Challenge 4: Smart Stadiums & Tournament Operations**
 
@@ -34,7 +33,7 @@ ArenaMind targets **Smart Stadiums & Tournament Operations** for FIFA World Cup 
 The platform directly addresses the challenge’s high-impact criteria:
 
 | Evaluation area | ArenaMind response |
-|---|---|
+| --- | --- |
 | Problem alignment | Crowd management, navigation, accessibility, transport, sustainability, multilingual support, and real-time decisions |
 | Code quality | Strict TypeScript, typed Pydantic contracts, service/repository boundaries, modular monorepo |
 | Security | JWT/RBAC, constrained inputs, trusted hosts, CORS, secure headers, rate limits, non-root containers |
@@ -111,21 +110,31 @@ Open `http://localhost:8080` in your browser.
 ### Approach 2: Run Manually (For Active Development)
 
 This approach runs the services directly on your host machine to allow hot-reloading:
+
 1. Start local MongoDB (`27017`) and Redis (`6379`).
 2. Run the **FastAPI Backend** (`apps/api`):
+
    ```bash
    cd apps/api
    python -m venv .venv
-   source .venv/bin/activate  # Or .venv\Scripts\activate on Windows
+   # On Windows Git Bash:
+   source .venv/Scripts/activate
+   # On Windows CMD/PowerShell:
+   # .venv\Scripts\activate
+   # On macOS/Linux:
+   # source .venv/bin/activate
    pip install -r requirements.txt
    uvicorn app.main:app --reload
    ```
+
 3. Run the **Next.js Frontend** (`apps/web`):
+
    ```bash
    cd apps/web
    npm install
    npm run dev
    ```
+
 4. Open `http://localhost:3000` in your browser.
 
 > 🔐 Never commit `.env`. For complete environment configurations, secret setup details, and production guidelines, read the [Deployment Guide](DEPLOYMENT.md).
@@ -146,7 +155,7 @@ MongoDB is the system of record, Redis supports coordination and live workloads,
 ## 📚 Documentation
 
 | Guide | Purpose |
-|---|---|
+| --- | --- |
 | [Architecture](ARCHITECTURE.md) | System boundaries, sequence flows, database design, and AI models |
 | [Deployment Guide](DEPLOYMENT.md) | Localhost setup, Docker compose steps, manual setup, and cloud architectures |
 | [Security Policy](SECURITY.md) | Threat model, OWASP controls, access restrictions, and vulnerability reporting |

@@ -5,6 +5,7 @@
 </div>
 
 ---
+
 <div align="center">
 
 ### 🧭 Navigation Panel
@@ -12,7 +13,6 @@
 [![Home](https://img.shields.io/badge/Home-README-09090B?style=flat-square&logo=github&logoColor=00E5FF&labelColor=111827)](README.md) [![Architecture](https://img.shields.io/badge/Architecture-Docs-09090B?style=flat-square&logo=diagrams.net&logoColor=00E5FF&labelColor=111827)](ARCHITECTURE.md) [![Deployment](https://img.shields.io/badge/Deployment-Guide-09090B?style=flat-square&logo=docker&logoColor=00E5FF&labelColor=111827)](DEPLOYMENT.md) [![Security](https://img.shields.io/badge/Security-Policy-09090B?style=flat-square&logo=dependabot&logoColor=00E5FF&labelColor=111827)](SECURITY.md) [![Instructions](https://img.shields.io/badge/Instructions-Files-09090B?style=flat-square&logo=readme&logoColor=00E5FF&labelColor=111827)](INSTRUCTIONS.md)
 
 </div>
----
 
 This document provides step-by-step instructions for running ArenaMind AI on your local machine (`localhost`) and outlines production-grade deployment architectures across cloud environments.
 
@@ -23,7 +23,9 @@ This document provides step-by-step instructions for running ArenaMind AI on you
 ArenaMind AI can be run locally using **Docker Compose** (recommended for speed and consistency) or **manually** (best for active frontend/backend development).
 
 ### 📋 1. Prerequisites
+
 Before you begin, ensure you have the following installed:
+
 - **Git** (for version control)
 - **Docker Desktop** (required for Docker setup)
 - **Node.js 22+ & npm** (required for manual frontend setup)
@@ -33,14 +35,19 @@ Before you begin, ensure you have the following installed:
 ---
 
 ### 🐳 Option A: Running with Docker Compose (Recommended)
+
 This method starts all four services (MongoDB, Redis, FastAPI Backend, Next.js Frontend) and configures them to communicate securely through a private container network.
 
 #### Step 1: Clone the repository and configure the environment
+
 1. Copy the `.env.example` file to create your local `.env`:
+
    ```bash
    cp .env.example .env
    ```
+
 2. Open `.env` and fill in your AI provider credentials. E.g., for Gemini:
+
    ```dotenv
    AI_PROVIDER=gemini
    AI_API_KEY=your_gemini_api_key_here
@@ -48,17 +55,23 @@ This method starts all four services (MongoDB, Redis, FastAPI Backend, Next.js F
    ```
 
 #### Step 2: Start the containers
+
 Run the following command to build and launch all services in detached mode:
+
 ```bash
 docker compose up --build -d
 ```
 
 #### Step 3: Verify execution and port access
+
 Once the command completes, verify that all services are healthy and running:
+
 ```bash
 docker compose ps
 ```
+
 The services are exposed on the following ports:
+
 - 🌐 **Nginx Reverse Proxy / App Ingress**: [http://localhost:8080](http://localhost:8080) (Access the web dashboard here)
 - 🖥️ **Next.js Frontend (direct)**: [http://localhost:3000](http://localhost:3000)
 - ⚡ **FastAPI Backend (direct)**: [http://localhost:8000](http://localhost:8000)
@@ -66,7 +79,9 @@ The services are exposed on the following ports:
 - 🔴 **Redis**: `localhost:6379`
 
 #### Step 4: Verify health checks
+
 Check the FastAPI backend liveness and readiness probes:
+
 ```bash
 curl http://localhost:8080/health
 curl http://localhost:8080/ready
@@ -75,15 +90,20 @@ curl http://localhost:8080/ready
 ---
 
 ### 🛠️ Option B: Manual Setup (No Docker)
+
 Use this option to run the services directly on your host machine to allow fast hot-reloading.
 
 #### Step 1: Configure the Local Environment
+
 1. Ensure you have a local instance of **MongoDB** running on port `27017` and **Redis** running on port `6379`.
 2. Copy the configuration template:
+
    ```bash
    cp .env.example .env
    ```
+
 3. Update `.env` to point to `localhost` databases instead of the Docker hostnames:
+
    ```dotenv
    MONGODB_URL=mongodb://localhost:27017
    MONGODB_DATABASE=arenamind
@@ -103,11 +123,13 @@ Use this option to run the services directly on your host machine to allow fast 
    ```
 
 #### Step 2: Setup and start the FastAPI Backend
+
 > [!IMPORTANT]
 > The backend is written in Python (FastAPI). All commands below **must be run from the backend directory** (`apps/api`), NOT from the root or the web directory.
 > If you are currently in `apps/web`, run `cd ../api` first.
 
 1. Navigate to the API folder, create a virtual environment, and install dependencies:
+
    ```bash
    # Make sure you are in the apps/api folder
    cd apps/api
@@ -115,25 +137,31 @@ Use this option to run the services directly on your host machine to allow fast 
    # Create and activate virtual environment
    python -m venv .venv
    
-   # On Windows (Command Prompt/PowerShell):
-   .venv\Scripts\activate
-   # On macOS/Linux/Git Bash:
-   source .venv/bin/activate
+   # On Windows Git Bash:
+   source .venv/Scripts/activate
+   # On Windows CMD/PowerShell:
+   # .venv\Scripts\activate
+   # On macOS/Linux:
+   # source .venv/bin/activate
    
    # Install backend packages
    pip install -r requirements.txt
    ```
+
 2. Start the Uvicorn server:
+
    ```bash
    # Must be run from the apps/api folder with virtual environment active
    uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
    ```
 
 #### Step 3: Setup and start the Next.js Frontend
+
 > [!IMPORTANT]
 > The frontend is written in TypeScript/React (Next.js). All commands below **must be run from the frontend directory** (`apps/web`).
 
 1. Open a new terminal, navigate to the web folder, and install dependencies:
+
    ```bash
    # Make sure you are in the apps/web folder
    cd apps/web
@@ -141,10 +169,13 @@ Use this option to run the services directly on your host machine to allow fast 
    # Install Node packages
    npm install
    ```
+
 2. Start the Next.js development server:
+
    ```bash
    npm run dev
    ```
+
 3. Open [http://localhost:3000](http://localhost:3000) in your browser. Sign in using the default admin credentials specified in your `.env`.
 
 ---
@@ -154,6 +185,7 @@ Use this option to run the services directly on your host machine to allow fast 
 For a resilient, low-latency, and highly available deployment suitable for stadium operations, we recommend **Serverless + Managed Databases** over standalone virtual machines.
 
 ### 🗺️ Recommended Deployment Architecture (Google Cloud Platform)
+
 Since ArenaMind AI natively utilizes **Google Gemini** as its core GenAI provider, deploying on **Google Cloud Platform (GCP)** offers the best integration, security, and low network latency.
 
 ```mermaid
@@ -173,7 +205,7 @@ graph TD
 ### 📦 Service-by-Service Deployment Selection
 
 | Monorepo Component | Best Fit Deployment Option | Why This Fits Best |
-|---|---|---|
+| --- | --- | --- |
 | 🌐 **Next.js Web Frontend** | **Vercel** _(or Google Cloud Run)_ | **Vercel** provides out-of-the-box global edge CDN, automatic performance optimization, instant previews, and seamless React Query SSR compilation. |
 | ⚡ **FastAPI Backend** | **Google Cloud Run** | Containerized serverless that automatically scales compute based on incoming requests (including scaling to 0 to save costs). Fully supports FastAPI async execution and **WebSockets** (`/ws/operations`) with session affinity enabled. |
 | 🍃 **MongoDB Store** | **MongoDB Atlas** | Managed database cluster with automatic scaling, backup recovery, encrypted storage, and built-in **Atlas Vector Search** (critical when scaling ArenaMind's playbook retrieval to thousands of documents). |
@@ -186,20 +218,26 @@ graph TD
 Before launching in a live stadium tournament, complete these security and operations steps:
 
 #### 1. Secret Injection (No Env Files)
-Never upload `.env` files to production servers. 
+
+Never upload `.env` files to production servers.
+
 - Deploy the database strings, AI API keys, and JWT secrets directly into **GCP Secret Manager** or **Vercel Environment Secrets**.
 - Bind those secrets to Google Cloud Run as environment variables at runtime.
 
 #### 2. Network Isolation (VPC)
+
 - Restrict MongoDB Atlas and Upstash Redis access using IP Access Lists or VPC Peering.
 - Do not expose MongoDB or Redis to the public internet (`0.0.0.0/0`).
 
 #### 3. SSL/TLS & Reverse Proxy Routing
+
 - Route all traffic through a Web Application Firewall (WAF) such as **Cloudflare** or **Google Cloud Armor** to defend against DDoS attacks and rate-limit malicious traffic.
 - Enforce HTTP-to-HTTPS redirection and configure HTTP Strict Transport Security (HSTS).
 
 #### 4. Enable WebSockets on Cloud Run
+
 When deploying the API to Google Cloud Run, make sure to adjust:
+
 - **Maximum concurrency**: 80 or higher (FastAPI handles multiple concurrent connections).
 - **Session affinity**: Enabled (required to route WebSocket heartbeat checks back to the correct instance).
 - **Timeout**: Set to 3600 seconds to prevent premature WebSocket terminations.
