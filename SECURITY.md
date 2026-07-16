@@ -78,7 +78,7 @@ We implement a multi-layered defense-in-depth model across the entire applicatio
 If you identify a security issue, do not open a public GitHub Issue. Report findings privately:
 
 > [!IMPORTANT]
-> Email details to: **security@arenamind.io**
+> Email details to: **`security@arenamind.io`**
 > Include the version, target component, detailed reproduction steps, and impact. We commit to acknowledging reports within 24 hours.
 
 <div align="center">
