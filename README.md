@@ -81,7 +81,7 @@ The model cannot directly execute stadium actions. It must return a structured s
 ### Approach 1: Run with Docker Compose (Recommended)
 
 ```bash
-git clone https://github.com/Babin123456/ArenaMind-AI.git
+git clone https://github.com/<your-github-username>/ArenaMind-AI.git
 cd ArenaMind-AI
 copy .env.example .env
 docker compose up --build

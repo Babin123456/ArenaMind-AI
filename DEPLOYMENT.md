@@ -97,9 +97,11 @@ Use this option to run the services directly on your host machine to allow fast 
 
 1. Start the required **MongoDB** (`27017`) and **Redis** (`6379`) database services. You can run them in one of two ways:
    * **Method A (Recommended: Hybrid Setup)**: Use Docker to run only the database containers (keeps your host machine clean and avoids installing Redis on Windows):
+
      ```bash
      docker compose up -d mongodb redis
      ```
+
    * **Method B (Native Services)**:
      * **Windows**: Open an **Administrator Command Prompt** and run `net start MongoDB`. Start your local Redis instance (e.g. via WSL by typing `redis-server`).
      * **macOS**: Start services via Homebrew: `brew services start mongodb-community` and `brew services start redis`.
@@ -184,7 +186,7 @@ Use this option to run the services directly on your host machine to allow fast 
    ```
 
 3. Open [http://localhost:3000](http://localhost:3000) in your browser. Sign in using the default admin credentials (Email: `administrator@arenamind.local`, Password: `ChangeMe-ArenaMind-2026`, or the custom values you configured in your `.env`).
-   
+
    > 🎨 **Branding & Theme**: The application's favicon is configured using the [favicon.png](favicon.png) asset, which is dynamically loaded by Next.js from [apps/web/src/app/icon.png](apps/web/src/app/icon.png).
 
 ---
@@ -227,23 +229,26 @@ graph TD
 Follow these exact steps to import and host the monorepo web frontend on Vercel:
 
 ### 1️⃣ Import Project from GitHub
+
 1. Log in to your Vercel Dashboard and click **New Project**.
 2. Select **Importing from GitHub** and authorize your account if needed.
-3. Locate the repository `Babin123456/ArenaMind-AI` and click **Import**.
+3. Locate the repository `<your-github-username>/ArenaMind-AI` and click **Import**.
 4. In the configuration, select the branch **`main`**.
 
 ### 2️⃣ Configure Project Settings
+
 Configure the project parameters exactly as follows:
 
 | Field | Selection / Value |
 | --- | --- |
-| **Vercel Team** | `Babin123` |
+| **Vercel Team** | `<your-vercel-team>` |
 | **Plan Type** | `Hobby` |
 | **Project Name** | `arena-mind-ai-web` |
 | **Framework Preset** | `Next.js` |
 | **Root Directory** | `apps/web` *(Vercel will ask you to choose where you want to create the project; use the slash divider to browse to `apps/web`)* |
 
 ### 3️⃣ Configure Build & Development Settings
+
 Toggle the **Build and Development Settings** dropdown and configure:
 
 * **Build Command**: `npm run build` or `next build`
@@ -251,6 +256,7 @@ Toggle the **Build and Development Settings** dropdown and configure:
 * **Install Command**: `npm install --prefix=../..` *(This is required to resolve packages from the monorepo root)*
 
 ### 4️⃣ Set Environment Variables
+
 In the **Environment Variables** section, add your environment settings (e.g. your backend URL, JWT secrets, etc.):
 
 1. Add your key-value pairs (for example, Key: `EXAMPLE_NAME`, Value: `your-value`).
