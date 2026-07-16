@@ -231,7 +231,10 @@ graph TD
 
 ## 🚀 Recommended Deployment Order & Workflow Roadmap
 
-To avoid build errors and connection failures, you **must** deploy the services in the following specific sequence:
+> [!IMPORTANT]
+> **Why Vercel Alone is Insufficient**: Vercel is designed to host static frontends and serverless functions. It **cannot** run persistent Python servers (FastAPI uvicorn) or handle **WebSockets** (which are required for the live dashboard metrics and telemetry). You must deploy the FastAPI Python backend on a platform that supports persistent web servers (like **Render**) and connect Vercel to it.
+
+Deploy the services in this exact order:
 
 ```mermaid
 flowchart TD
@@ -239,9 +242,37 @@ flowchart TD
     Step2 --> |Get Backend Public URL| Step3[3. Web Frontend: Vercel Deployment]
 ```
 
-1. **Step 1 (Databases)**: Set up your cloud database clusters (**MongoDB Atlas** and **Upstash Redis**). Copy their connection strings and credential passwords first.
-2. **Step 2 (Backend API)**: Deploy your FastAPI server to **Render** using the database connection strings. Once deployed, copy your Render web service URL (e.g., `https://arena-mind-ai-api.onrender.com`).
-3. **Step 3 (Frontend Web)**: Deploy the Next.js frontend to **Vercel**. Provide the backend URL from Step 2 into the Vercel environment settings before hitting deploy.
+### 1️⃣ Step 1: Set up Cloud Databases
+* Set up your database instances (**MongoDB Atlas** and **Upstash Redis**). 
+* Whitelist IP **`0.0.0.0/0`** in MongoDB Atlas Network Access so Render can connect.
+* Copy both database connection URLs.
+
+### 2️⃣ Step 2: Deploy Backend to Render (First!)
+Deploy your FastAPI server to **Render** (`apps/api`). During Render setup, you **must** configure these environment variables:
+
+| Render Environment Variable Key | Expected Value / Source |
+| --- | --- |
+| **`MONGODB_URL`** | Your MongoDB Atlas connection string (containing username and password) |
+| **`MONGODB_DATABASE`** | `arenamind` |
+| **`REDIS_URL`** | Your Upstash Redis secure connection string (starts with `rediss://`) |
+| **`JWT_SECRET`** | Your generated secure JWT secret (Python/OpenSSL generated) |
+| **`BOOTSTRAP_ADMIN_EMAIL`** | `administrator@arenamind.local` (or your custom admin email) |
+| **`BOOTSTRAP_ADMIN_PASSWORD`** | Your secure bootstrap password (e.g. `MxgUGVqZuB5rG8kqrGA-Zg`) |
+| **`AI_PROVIDER`** | `groq` or `gemini` |
+| **`AI_API_KEY`** | Your Groq or Gemini API Key |
+| **`AI_MODEL`** | `llama-3.3-70b-versatile` or `gemini-2.5-flash` |
+
+Once deployed, copy your Render web service URL (e.g., `https://arena-mind-ai-api.onrender.com`).
+
+### 3️⃣ Step 3: Deploy Frontend to Vercel (Second!)
+Import your Next.js app (`apps/web`) into **Vercel**. In the Vercel Dashboard, you **must** configure these environment variables before clicking Deploy:
+
+| Vercel Environment Variable Key | Expected Value / Source |
+| --- | --- |
+| **`NEXT_PUBLIC_API_URL`** | `https://<your-render-url>/api/v1` (e.g., `https://arena-mind-ai-api.onrender.com/api/v1`) |
+| **`NEXT_PUBLIC_WS_URL`** | `wss://<your-render-url>/ws` (e.g., `wss://arena-mind-ai-api.onrender.com/ws`) |
+
+*Note: Ensure the WebSocket protocol starts with **`wss://`** (secure WebSocket) for production.*
 
 ---
 
