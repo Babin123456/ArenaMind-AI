@@ -106,7 +106,9 @@ AI_MODEL=gemini-2.5-flash
 Open `http://localhost:8080` in your browser.
 
 #### 🔑 Default Local Credentials
+
 Use these credentials to sign in to the dashboard during local testing:
+
 - **Email**: `administrator@arenamind.local`
 - **Password**: 
   * If you copied `.env.example` to `.env` without changes, use: **`replace-with-a-strong-bootstrap-password`**
@@ -120,17 +122,21 @@ Use these credentials to sign in to the dashboard during local testing:
 This approach runs the frontend and backend directly on your host machine to allow quick code changes and hot-reloading.
 
 #### 🗄️ Step 1: Start MongoDB (`27017`) and Redis (`6379`)
+
 You can start the required databases in one of two ways:
 
 * **Method A (Recommended: Hybrid Setup)**: Use Docker to run only the databases (keeps your host machine clean and avoids installing Redis on Windows):
+
   ```bash
   docker compose up -d mongodb redis
   ```
+
 * **Method B (Native Services)**:
+
   * **Windows**: Open an **Administrator Command Prompt** and start MongoDB: `net start MongoDB`. Start your local Redis instance (e.g., via WSL using `redis-server`).
   * **macOS**: Start services via Homebrew: `brew services start mongodb-community` and `brew services start redis`.
 
-#### Step 2: Run the FastAPI Backend (`apps/api`)
+#### ⚡ Step 2: Run the FastAPI Backend (`apps/api`)
 
    ```bash
    cd apps/api
@@ -145,15 +151,17 @@ You can start the required databases in one of two ways:
    uvicorn app.main:app --reload
    ```
 
-3. Run the **Next.js Frontend** (`apps/web`):
+#### 🌐 Step 3: Run the Next.js Frontend (`apps/web`)
 
-   ```bash
-   cd apps/web
-   npm install
-   npm run dev
-   ```
+```bash
+cd apps/web
+npm install
+npm run dev
+```
 
-4. Open `http://localhost:3000` in your browser.
+#### 🔑 Step 4: Open in Browser
+
+Open `http://localhost:3000` in your browser.
 
 > 🎨 **Branding & Theme**: The application's favicon is configured using the [favicon.png](favicon.png) asset, which is dynamically loaded by Next.js from [apps/web/src/app/icon.png](apps/web/src/app/icon.png).
 
