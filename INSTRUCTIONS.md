@@ -32,6 +32,18 @@ ArenaMind-AI/
 
 ---
 
+## 🗄️ Core Infrastructure Roles
+
+To support real-time Operations Center workflows, the platform relies on specific infrastructure components:
+
+* **🍃 MongoDB (System of Record)**: Exposes a flexible, schema-free database that serves as the persistent database store. It houses user credentials, incident logs, assignment workflows, security audits, and RAG knowledge playbooks.
+* **🔴 Redis (High-Speed Telemetry & Cache)**: Serves as an in-memory database to store temporary dashboard cache payloads, track concurrent rate-limit buckets, and coordinate real-time state checks. By caching frequent GET queries, it prevents database overhead.
+* **⚡ FastAPI (API & WebSocket Broadcast)**: Handles core business logic, schema validation, RAG queries to LLM providers (Gemini/Groq), and streams live telemetry heartbeat data to connected clients via WebSockets.
+* **🌐 Next.js (Dashboard Interface)**: Operates as the presentation layer. It manages local states, routes role-specific views, and renders real-time incident reports and AI advisor recommendations.
+* **🛡️ NginX (Edge Gateway)**: Serves as the security ingress, handling SSL termination, rate-limiting malicious bots, injecting security headers (CSP, HSTS), and routing incoming traffic between the web dashboard and backend API.
+
+---
+
 ## ⚡ Backend Component (`apps/api`)
 
 The backend is built with **FastAPI** and uses **Pydantic** for schema validation, **PyJWT** for token security, **pymongo** for async MongoDB access, and **redis** for caching.
