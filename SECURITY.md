@@ -12,7 +12,6 @@
 [![Home](https://img.shields.io/badge/Home-README-09090B?style=flat-square&logo=github&logoColor=00E5FF&labelColor=111827)](README.md) [![Architecture](https://img.shields.io/badge/Architecture-Docs-09090B?style=flat-square&logo=diagrams.net&logoColor=00E5FF&labelColor=111827)](ARCHITECTURE.md) [![Deployment](https://img.shields.io/badge/Deployment-Guide-09090B?style=flat-square&logo=docker&logoColor=00E5FF&labelColor=111827)](DEPLOYMENT.md) [![Security](https://img.shields.io/badge/Security-Policy-09090B?style=flat-square&logo=dependabot&logoColor=00E5FF&labelColor=111827)](SECURITY.md) [![Instructions](https://img.shields.io/badge/Instructions-Files-09090B?style=flat-square&logo=readme&logoColor=00E5FF&labelColor=111827)](INSTRUCTIONS.md)
 
 </div>
----
 
 This document outlines the threat model, mitigation controls, and vulnerability reporting procedures for the ArenaMind AI platform.
 
@@ -36,6 +35,7 @@ graph TD
 ## ☣️ 1. Threat Model
 
 ArenaMind operates in high-stakes stadium environments where service availability and data integrity are paramount. The threat landscape includes:
+
 - **Identity Theft**: Compromise of operator accounts to manipulate response actions.
 - **Data Tampering**: Malicious modification of active incidents, volunteer tasks, or access routes.
 - **Prompt Injection**: Overriding LLM system prompts to extract private system guidelines or generate unsafe instructions.
@@ -49,16 +49,19 @@ ArenaMind operates in high-stakes stadium environments where service availabilit
 We implement a multi-layered defense-in-depth model across the entire application stack:
 
 ### 🔐 Layer A: Identity & Authorization
+
 - **Strict Role-Based Access Control (RBAC)**: All sensitive routes (e.g. creating incidents, assigning tasks, seeding playbooks) require explicitly verified roles (`require_roles` FastAPI dependency).
 - **JWT Lifetime Controls**: Employs short-lived JWT access tokens and long-lived refresh tokens. Access tokens are kept in tab-session storage only.
 - **Argon2 Hashing**: Passwords are saved as one-way cryptographically hardened hashes using the Argon2 hashing algorithm.
 
 ### 📝 Layer B: Input Safety & AI Safeguards
+
 - **Pydantic Validation**: All request bodies undergo strict validation (regex, length limits, pattern matching) before execution.
 - **Injection Rejection**: Incoming copilot queries are screened against known prompt-injection signatures (e.g., `"ignore previous instructions"`) and aborted immediately.
 - **Confidence Scoring & Sourcing**: Copilot responses include provenance indicators (source tracking) and require human validation before execution.
 
 ### ⚙️ Layer C: Infrastructure Hardening
+
 - **NginX Edge Protection**: Enforces rate limiting (`limit_req`), restricted HTTP verbs, CORS protections, and strict `Content-Security-Policy` headers.
 - **Non-Root Containers**: Docker instances run under low-privilege system users (`app`) to block privilege escalation.
 
