@@ -25,6 +25,11 @@ export function LoginScreen({ onAuthenticated }: LoginScreenProps) {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
+  const handleUseDemo = () => {
+    setEmail("administrator@arenamind.local");
+    setPassword("MxgUGVqZuB5rG8kqrGA-Zg");
+  };
+
   async function submit(event: FormEvent) {
     event.preventDefault();
     setBusy(true);
@@ -89,7 +94,6 @@ export function LoginScreen({ onAuthenticated }: LoginScreenProps) {
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            minLength={12}
             required
           />
 
@@ -105,15 +109,44 @@ export function LoginScreen({ onAuthenticated }: LoginScreenProps) {
           </button>
         </form>
 
-        <div style={{ marginTop: "20px", borderTop: "1px solid var(--line)", paddingTop: "15px" }}>
-          <p style={{ margin: 0, fontSize: "11px", color: "var(--muted)", lineHeight: "1.4" }}>
-            💡 <strong>Local Test Credentials:</strong>
+        <div style={{ marginTop: "24px", borderTop: "1px solid var(--line)", paddingTop: "16px" }}>
+          <p style={{ margin: 0, fontSize: "12px", color: "var(--muted)", lineHeight: "1.4", fontWeight: 600 }}>
+            🚀 Deployed Demo Credentials:
           </p>
-          <ul style={{ margin: "5px 0 0", paddingLeft: "15px", fontSize: "11px", color: "var(--muted)", lineHeight: "1.5" }}>
-            <li>Email: <code>administrator@arenamind.local</code></li>
-            <li>Password (with unmodified `.env`): <code>replace-with-a-strong-bootstrap-password</code></li>
-            <li>Password (without `.env` fallback): <code>ChangeMe-ArenaMind-2026</code></li>
-          </ul>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "8px", background: "rgba(0, 229, 255, 0.05)", border: "1px solid rgba(0, 229, 255, 0.15)", padding: "10px 12px", borderRadius: "8px" }}>
+            <div style={{ fontSize: "11px", color: "var(--muted)", lineHeight: "1.5" }}>
+              <div>Email: <code style={{ color: "#fff" }}>administrator@arenamind.local</code></div>
+              <div>Password: <code style={{ color: "#fff" }}>MxgUGVqZuB5rG8kqrGA-Zg</code></div>
+            </div>
+            <button
+              type="button"
+              onClick={handleUseDemo}
+              style={{
+                background: "rgba(0, 229, 255, 0.1)",
+                color: "var(--cyan)",
+                border: "1px solid rgba(0, 229, 255, 0.3)",
+                borderRadius: "6px",
+                padding: "6px 10px",
+                fontSize: "11px",
+                fontWeight: 700,
+                cursor: "pointer",
+                transition: "all 0.2s ease"
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "var(--cyan)";
+                e.currentTarget.style.color = "#030712";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "rgba(0, 229, 255, 0.1)";
+                e.currentTarget.style.color = "var(--cyan)";
+              }}
+            >
+              Autofill
+            </button>
+          </div>
+          <p style={{ margin: "12px 0 0", fontSize: "10px", color: "#64748b", lineHeight: "1.4" }}>
+            💡 <em>Note: If running locally from the repository, use the passwords defined in your local <code>.env</code> file.</em>
+          </p>
         </div>
       </section>
     </main>
