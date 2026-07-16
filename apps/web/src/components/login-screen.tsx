@@ -19,11 +19,105 @@ interface LoginScreenProps {
  * A decorative radar animation reinforces the stadium operations theme
  * without interfering with accessibility (it respects `prefers-reduced-motion`).
  */
+import { LanguageSelector } from "./language-selector";
+
+const LOGIN_TRANSLATIONS: Record<string, Record<string, string>> = {
+  en: {
+    title: "Command sign in",
+    subtitle: "STADIUM OPERATIONS CENTER",
+    copy: "Use your assigned venue identity. Access and actions are recorded for operational accountability.",
+    email: "Email",
+    password: "Password",
+    submitBtn: "Enter command center",
+    authenticating: "Authenticating…",
+    demoCreds: "Deployed Demo Credentials:",
+    localNote: "Note: If running locally from the repository, use the passwords defined in your local .env file."
+  },
+  es: {
+    title: "Inicio de sesión de comando",
+    subtitle: "CENTRO DE OPERACIONES DEL ESTADIO",
+    copy: "Use su identidad de lugar asignada. El acceso y las acciones se registran para la rendición de cuentas operativa.",
+    email: "Correo electrónico",
+    password: "Contraseña",
+    submitBtn: "Ingresar al centro de mando",
+    authenticating: "Autenticando…",
+    demoCreds: "Credenciales de demostración desplegadas:",
+    localNote: "Nota: Si se ejecuta localmente desde el repositorio, use las contraseñas definidas en su archivo .env local."
+  },
+  fr: {
+    title: "Connexion de commande",
+    subtitle: "CENTRE D'OPÉRATIONS DU STADE",
+    copy: "Utilisez l'identité de lieu qui vous a été attribuée. L'accès et les actions sont enregistrés pour la responsabilité opérationnelle.",
+    email: "E-mail",
+    password: "Mot de passe",
+    submitBtn: "Entrer dans le centre de commandement",
+    authenticating: "Authentification…",
+    demoCreds: "Identifiants de démonstration déployés :",
+    localNote: "Remarque : Si vous exécutez localement à partir du référentiel, utilisez les mots de passe définis dans votre fichier .env local."
+  },
+  ar: {
+    title: "تسجيل دخول القيادة",
+    subtitle: "مركز عمليات الملعب",
+    copy: "استخدم هوية المكان المخصصة لك. يتم تسجيل الدخول والإجراءات للمساءلة التشغيلية.",
+    email: "البريد الإلكتروني",
+    password: "كلمة المرور",
+    submitBtn: "الدخول إلى مركز القيادة",
+    authenticating: "جاري التحقق…",
+    demoCreds: "بيانات اعتماد العرض التوضيحي المنشورة:",
+    localNote: "ملاحظة: في حالة التشغيل محليًا من المستودع، استخدم كلمات المرور المحددة في ملف .env المحلي."
+  },
+  pt: {
+    title: "Entrada de comando",
+    subtitle: "CENTRO DE OPERAÇÕES DO ESTÁDIO",
+    copy: "Use a sua identidade de local atribuída. O acesso e as ações são gravados para responsabilidade operacional.",
+    email: "E-mail",
+    password: "Senha",
+    submitBtn: "Entrar no centro de comando",
+    authenticating: "Autenticando…",
+    demoCreds: "Credenciais de demonstração implantadas:",
+    localNote: "Nota: Se estiver executando localmente a partir do repositório, use as senhas definidas no seu arquivo .env local."
+  },
+  de: {
+    title: "Befehlsanmeldung",
+    subtitle: "STADION-BETRIEBSZENTRUM",
+    copy: "Verwenden Sie Ihre zugewiesene Identität. Zugriffe und Aktionen werden zur betrieblichen Rechenschaftspflicht aufgezeichnet.",
+    email: "E-Mail",
+    password: "Kennwort",
+    submitBtn: "Befehlszentrum betreten",
+    authenticating: "Authentifizierung…",
+    demoCreds: "Bereitgestellte Demo-Zugangsdaten:",
+    localNote: "Hinweis: Wenn Sie lokal über das Repository arbeiten, verwenden Sie die in Ihrer lokalen .env-Datei definierten Kennwörter."
+  },
+  ja: {
+    title: "コマンドサインイン",
+    subtitle: "スタジアム運営センター",
+    copy: "割り当てられた会場の識別情報を使用してください。アクセスとアクションは運営上の説明責任のために記録されます。",
+    email: "メールアドレス",
+    password: "パスワード",
+    submitBtn: "司令センターに入る",
+    authenticating: "認証中…",
+    demoCreds: "デプロイされたデモ用資格情報：",
+    localNote: "注意：リポジトリからローカルで実行する場合は、ローカルの .env ファイルで定義されているパスワードを使用してください。"
+  },
+  zh: {
+    title: "指挥部登录",
+    subtitle: "体育场运营中心",
+    copy: "使用您分配的场馆身份。访问和操作将被记录，以进行运营问责。",
+    email: "电子邮件",
+    password: "密码",
+    submitBtn: "进入指挥中心",
+    authenticating: "正在身份验证…",
+    demoCreds: "已部署的演示凭据：",
+    localNote: "注意：如果是从存储库在本地运行，请使用本地 .env 文件中密码。"
+  }
+};
+
 export function LoginScreen({ onAuthenticated }: LoginScreenProps) {
   const [email, setEmail] = useState("administrator@arenamind.local");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [lang, setLang] = useState("en");
 
   const handleUseDemo = () => {
     setEmail("administrator@arenamind.local");
@@ -46,14 +140,20 @@ export function LoginScreen({ onAuthenticated }: LoginScreenProps) {
     }
   }
 
+  const t = LOGIN_TRANSLATIONS[lang] || LOGIN_TRANSLATIONS.en;
+
   return (
     <main id="main" className="login-shell">
       {/* Decorative radar animation — hidden from assistive technology */}
       <div className="login-radar" aria-hidden="true">
-        <i />
-        <i />
-        <i />
+        <i aria-hidden="true" />
+        <i aria-hidden="true" />
+        <i aria-hidden="true" />
         <span />
+      </div>
+
+      <div style={{ position: "absolute", top: "20px", right: "20px", zIndex: 10 }}>
+        <LanguageSelector onLanguageChange={(code) => setLang(code)} />
       </div>
 
       <section className="login-panel" aria-labelledby="login-title">
@@ -68,16 +168,13 @@ export function LoginScreen({ onAuthenticated }: LoginScreenProps) {
           </div>
         </div>
 
-        <p className="eyebrow">STADIUM OPERATIONS CENTER</p>
-        <h1 id="login-title">Command sign in</h1>
-        <p className="login-copy">
-          Use your assigned venue identity. Access and actions are recorded for
-          operational accountability.
-        </p>
+        <p className="eyebrow">{t.subtitle}</p>
+        <h1 id="login-title">{t.title}</h1>
+        <p className="login-copy">{t.copy}</p>
 
         {/* Sign-in form */}
         <form onSubmit={submit}>
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email">{t.email}</label>
           <input
             id="email"
             type="email"
@@ -87,7 +184,7 @@ export function LoginScreen({ onAuthenticated }: LoginScreenProps) {
             required
           />
 
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">{t.password}</label>
           <input
             id="password"
             type="password"
@@ -104,23 +201,24 @@ export function LoginScreen({ onAuthenticated }: LoginScreenProps) {
           )}
 
           <button disabled={busy}>
-            {busy ? "Authenticating…" : "Enter command center"}
+            {busy ? t.authenticating : t.submitBtn}
             <ChevronRight />
           </button>
         </form>
 
-        <div style={{ marginTop: "24px", borderTop: "1px solid var(--line)", paddingTop: "16px" }}>
+        <section aria-label="Demo credentials help panel" style={{ marginTop: "24px", borderTop: "1px solid var(--line)", paddingTop: "16px" }}>
           <p style={{ margin: 0, fontSize: "12px", color: "var(--muted)", lineHeight: "1.4", fontWeight: 600, display: "flex", alignItems: "center", gap: "6px" }}>
-            <KeyRound style={{ width: "14px", height: "14px", color: "var(--cyan)" }} /> Deployed Demo Credentials:
+            <KeyRound style={{ width: "14px", height: "14px", color: "var(--cyan)" }} /> {t.demoCreds}
           </p>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "8px", background: "rgba(0, 229, 255, 0.05)", border: "1px solid rgba(0, 229, 255, 0.15)", padding: "10px 12px", borderRadius: "8px" }}>
             <div style={{ fontSize: "11px", color: "var(--muted)", lineHeight: "1.5" }}>
-              <div>Email: <code style={{ color: "#fff" }}>administrator@arenamind.local</code></div>
-              <div>Password: <code style={{ color: "#fff" }}>MxgUGVqZuB5rG8kqrGA-Zg</code></div>
+              <div>{t.email}: <code style={{ color: "#fff" }}>administrator@arenamind.local</code></div>
+              <div>{t.password}: <code style={{ color: "#fff" }}>MxgUGVqZuB5rG8kqrGA-Zg</code></div>
             </div>
             <button
               type="button"
               onClick={handleUseDemo}
+              aria-label="Autofill demo credentials"
               style={{
                 background: "rgba(0, 229, 255, 0.1)",
                 color: "var(--cyan)",
@@ -145,9 +243,9 @@ export function LoginScreen({ onAuthenticated }: LoginScreenProps) {
             </button>
           </div>
           <p style={{ margin: "12px 0 0", fontSize: "10px", color: "#64748b", lineHeight: "1.4", display: "flex", alignItems: "center", gap: "5px" }}>
-            <Info style={{ width: "12px", height: "12px", flexShrink: 0 }} /> <em>Note: If running locally from the repository, use the passwords defined in your local <code>.env</code> file.</em>
+            <Info style={{ width: "12px", height: "12px", flexShrink: 0 }} /> <em>{t.localNote}</em>
           </p>
-        </div>
+        </section>
       </section>
     </main>
   );

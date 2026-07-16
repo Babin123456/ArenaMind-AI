@@ -1,16 +1,14 @@
 "use client";
 
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { AreaChart, Area, ResponsiveContainer, Tooltip, XAxis } from "recharts";
 import {
-  Activity,
   AlertTriangle,
-  Bell,
   Clock,
   Compass,
   HeartPulse,
   Leaf,
   Map,
+  Activity,
   Radio,
   Search,
   Shield,
@@ -29,6 +27,12 @@ import {
   hasSession,
   logout,
 } from "@/lib/api";
+import {
+  TRANSLATIONS,
+  getNavLabel,
+  type SupportedLanguage,
+} from "@/lib/translations";
+import { useWebSocket } from "@/hooks/use-websocket";
 
 /* ── Extracted components ──────────────────────────────────────────── */
 import { MetricCard } from "./metric-card";
@@ -39,21 +43,14 @@ import { DomainBrief } from "./domain-brief";
 import { CopilotPanel } from "./copilot-panel";
 import { LoginScreen } from "./login-screen";
 import { LanguageSelector } from "./language-selector";
+import { CrowdChart } from "./crowd-chart";
+import {
+  NotificationsPanel,
+  INITIAL_NOTIFICATIONS,
+  type Notification,
+} from "./notifications-panel";
 
 /* ── Static data ───────────────────────────────────────────────────── */
-
-/**
- * Simulated crowd-pressure trend for the last 90 minutes.
- * In production this would be streamed from venue sensor aggregation.
- */
-const crowdTrend = [
-  { t: "18:00", v: 42 },
-  { t: "18:15", v: 48 },
-  { t: "18:30", v: 57 },
-  { t: "18:45", v: 63 },
-  { t: "19:00", v: 71 },
-  { t: "19:15", v: 68 },
-];
 
 /** Sidebar navigation items with their associated Lucide icons. */
 const NAV_ITEMS = [
@@ -66,154 +63,6 @@ const NAV_ITEMS = [
   [Leaf,          "Sustainability"],
   [Compass,       "Venue navigation"],
 ] as const;
-
-/* ── Multilingual Translation Dictionary ───────────────────────────── */
-const TRANSLATIONS: Record<string, Record<string, string>> = {
-  en: {
-    overview: "Overview",
-    crowdIntel: "Crowd intelligence",
-    security: "Security",
-    medical: "Medical",
-    workforce: "Workforce",
-    transport: "Transportation",
-    sustainability: "Sustainability",
-    navigation: "Venue navigation",
-    attendance: "Attendance",
-    activeIncidents: "Active incidents",
-    medianGateWait: "Median gate wait",
-    medicalReadiness: "Medical readiness",
-    opsCommand: "Operations Command",
-    systemNominal: "Connected live",
-    ingressPhase: "Ingress · 36 min to kickoff",
-    stadiumPressure: "Stadium pressure index",
-  },
-  es: {
-    overview: "Resumen",
-    crowdIntel: "Inteligencia de multitudes",
-    security: "Seguridad",
-    medical: "Médico",
-    workforce: "Personal",
-    transport: "Transporte",
-    sustainability: "Sostenibilidad",
-    navigation: "Navegación del estadio",
-    attendance: "Asistencia",
-    activeIncidents: "Incidentes activos",
-    medianGateWait: "Espera media en puertas",
-    medicalReadiness: "Disponibilidad médica",
-    opsCommand: "Comando de Operaciones",
-    systemNominal: "Conectado en vivo",
-    ingressPhase: "Ingreso · 36 min para el saque inicial",
-    stadiumPressure: "Índice de presión del estadio",
-  },
-  fr: {
-    overview: "Aperçu",
-    crowdIntel: "Intelligence de foule",
-    security: "Sécurité",
-    medical: "Médical",
-    workforce: "Effectifs",
-    transport: "Transport",
-    sustainability: "Durabilité",
-    navigation: "Navigation du stade",
-    attendance: "Affluence",
-    activeIncidents: "Incidents actifs",
-    medianGateWait: "Attente moyenne aux portes",
-    medicalReadiness: "Préparation médicale",
-    opsCommand: "Commandement des Opérations",
-    systemNominal: "Connecté en direct",
-    ingressPhase: "Entrée · 36 min avant le coup d'envoi",
-    stadiumPressure: "Indice de pression du stade",
-  },
-  ar: {
-    overview: "نظرة عامة",
-    crowdIntel: "ذكاء الحشود",
-    security: "الأمن",
-    medical: "الطب",
-    workforce: "القوى العاملة",
-    transport: "النقل والمواصلات",
-    sustainability: "الاستدامة",
-    navigation: "ملاحة الملعب",
-    attendance: "الحضور",
-    activeIncidents: "الحوادث النشطة",
-    medianGateWait: "متوسط وقت انتظار البوابات",
-    medicalReadiness: "الجاهزية الطبية",
-    opsCommand: "قيادة العمليات",
-    systemNominal: "متصل مباشر",
-    ingressPhase: "الدخول · ٣٦ دقيقة على البداية",
-    stadiumPressure: "مؤشر ضغط الملعب",
-  },
-  pt: {
-    overview: "Visão Geral",
-    crowdIntel: "Inteligência de público",
-    security: "Segurança",
-    medical: "Médico",
-    workforce: "Equipe",
-    transport: "Transporte",
-    sustainability: "Sustentabilidade",
-    navigation: "Navegação do estádio",
-    attendance: "Público",
-    activeIncidents: "Incidentes ativos",
-    medianGateWait: "Espera média nos portões",
-    medicalReadiness: "Prontidão médica",
-    opsCommand: "Comando de Operações",
-    systemNominal: "Conectado ao vivo",
-    ingressPhase: "Ingresso · 36 min para o pontapé inicial",
-    stadiumPressure: "Índice de pressão do estádio",
-  },
-  de: {
-    overview: "Übersicht",
-    crowdIntel: "Zuschauer-Intelligenz",
-    security: "Sicherheit",
-    medical: "Medizinisch",
-    workforce: "Personal",
-    transport: "Transport",
-    sustainability: "Nachhaltigkeit",
-    navigation: "Stadion-Navigation",
-    attendance: "Zuschauerzahl",
-    activeIncidents: "Aktive Vorfälle",
-    medianGateWait: "Mittlere Wartezeit am Tor",
-    medicalReadiness: "Medizinische Bereitschaft",
-    opsCommand: "Einsatzleitung",
-    systemNominal: "Live verbunden",
-    ingressPhase: "Einlass · 36 Min. bis zum Anpfiff",
-    stadiumPressure: "Stadiondruck-Index",
-  },
-  ja: {
-    overview: "概要",
-    crowdIntel: "群衆インテリジェンス",
-    security: "警備",
-    medical: "医療",
-    workforce: "スタッフ人員",
-    transport: "交通機関",
-    sustainability: "サステナビリティ",
-    navigation: "スタジアム案内",
-    attendance: "来場者数",
-    activeIncidents: "アクティブなインシデント",
-    medianGateWait: "平均ゲート待ち時間",
-    medicalReadiness: "医療対応状態",
-    opsCommand: "運営司令センター",
-    systemNominal: "ライブ接続中",
-    ingressPhase: "入場中 · キックオフまで36分",
-    stadiumPressure: "スタジアム圧力インデックス",
-  },
-  zh: {
-    overview: "概述",
-    crowdIntel: "人群智能",
-    security: "安保",
-    medical: "医疗",
-    workforce: "工作人员",
-    transport: "交通运输",
-    sustainability: "可持续发展",
-    navigation: "场馆导航",
-    attendance: "到场人数",
-    activeIncidents: "活跃事件",
-    medianGateWait: "平均闸机排队时间",
-    medicalReadiness: "医疗准备就绪率",
-    opsCommand: "运营指挥中心",
-    systemNominal: "在线连接",
-    ingressPhase: "入场中 · 距离开球还有36分钟",
-    stadiumPressure: "体育场拥挤度指数",
-  }
-};
 
 /* ── Main dashboard component ──────────────────────────────────────── */
 
@@ -231,72 +80,16 @@ export function OperationsDashboard() {
   const [authenticated, setAuthenticated] = useState(false);
   const [activeView, setActiveView] = useState("Overview");
   const [query, setQuery] = useState("");
-  const [wsConnected, setWsConnected] = useState(false);
-  const [crowdIndex, setCrowdIndex] = useState(68);
-  const [lang, setLang] = useState("en");
+  const [lang, setLang] = useState<SupportedLanguage>("en");
   const [theme, setTheme] = useState("dark");
   const [showNotifications, setShowNotifications] = useState(false);
-  const [notifications, setNotifications] = useState([
-    { id: 1, severity: "critical", text: "North Plaza crowd density exceeded limit", time: "2m" },
-    { id: 2, severity: "medium", text: "Platform 2 transit rail delay increased", time: "8m" },
-    { id: 3, severity: "low", text: "Concourse kiosk power interruption resolved", time: "14m" }
-  ]);
+  const [notifications, setNotifications] = useState<Notification[]>(INITIAL_NOTIFICATIONS);
 
   /* Restore session on mount */
   useEffect(() => setAuthenticated(hasSession()), []);
 
-  /* Establish WebSocket connection for live telemetry when authenticated */
-  useEffect(() => {
-    if (!authenticated) return;
-
-    let ws: WebSocket | null = null;
-    let reconnectTimeout: NodeJS.Timeout;
-
-    function connect() {
-      const jwtToken = sessionStorage.getItem("arenamind_token") || "";
-      const baseWsUrl = process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:8000/ws";
-      const wsUrl = `${baseWsUrl}/operations?token=${encodeURIComponent(jwtToken)}`;
-
-      ws = new WebSocket(wsUrl);
-
-      ws.onopen = () => {
-        setWsConnected(true);
-      };
-
-      ws.onmessage = (event) => {
-        try {
-          const message = JSON.parse(event.data);
-          if (message.type === "heartbeat") {
-            if (typeof message.crowd_index === "number") {
-              setCrowdIndex(message.crowd_index);
-            }
-          }
-        } catch (e) {
-          console.error("Error parsing WebSocket message", e);
-        }
-      };
-
-      ws.onclose = () => {
-        setWsConnected(false);
-        // Attempt connection recovery after 5 seconds
-        reconnectTimeout = setTimeout(connect, 5000);
-      };
-
-      ws.onerror = () => {
-        ws?.close();
-      };
-    }
-
-    connect();
-
-    return () => {
-      if (ws) {
-        ws.onclose = null;
-        ws.close();
-      }
-      clearTimeout(reconnectTimeout);
-    };
-  }, [authenticated]);
+  /* Live WebSocket telemetry (extracted hook) */
+  const { wsConnected, crowdIndex } = useWebSocket(authenticated);
 
   /* Live dashboard data with offline-safe fallback */
   const dashboard = useQuery({
@@ -311,7 +104,14 @@ export function OperationsDashboard() {
     mutationFn: (text: string) =>
       api<CopilotAnswer>("/copilot/query", {
         method: "POST",
-        body: JSON.stringify({ query: text, context: { venue: "Arena 01" } }),
+        body: JSON.stringify({
+          query: text,
+          context: {
+            venue: "Arena 01",
+            active_view: activeView,
+            language: lang,
+          },
+        }),
       }),
   });
 
@@ -341,23 +141,14 @@ export function OperationsDashboard() {
 
   const t = TRANSLATIONS[lang] || TRANSLATIONS.en;
 
-  const getNavLabel = (label: string) => {
-    switch (label) {
-      case "Overview": return t.overview;
-      case "Crowd intelligence": return t.crowdIntel;
-      case "Security": return t.security;
-      case "Medical": return t.medical;
-      case "Workforce": return t.workforce;
-      case "Transportation": return t.transport;
-      case "Sustainability": return t.sustainability;
-      case "Venue navigation": return t.navigation;
-      default: return label;
-    }
-  };
-
   /* ── Authenticated dashboard ──────────────────────────────────── */
   return (
     <div className="shell">
+      {/* Skip to main content — accessibility landmark */}
+      <a className="sr-only" href="#main" style={{ position: "absolute" }}>
+        Skip to main content
+      </a>
+
       {/* ── Sidebar navigation ── */}
       <aside className="sidebar" aria-label="Primary navigation">
         <div className="brand">
@@ -379,8 +170,7 @@ export function OperationsDashboard() {
               aria-current={activeView === label ? "page" : undefined}
             >
               <Icon aria-hidden="true" />
-              <span>{getNavLabel(label)}</span>
-              {/* Badge for active security incidents */}
+              <span>{getNavLabel(label, t)}</span>
               {label === "Security" && <b>{notifications.length}</b>}
             </button>
           ))}
@@ -389,6 +179,7 @@ export function OperationsDashboard() {
         <div className="system">
           <span>
             <i
+              aria-hidden="true"
               style={{
                 background: wsConnected ? "var(--green)" : "var(--red)",
                 boxShadow: wsConnected ? "0 0 8px var(--green)" : "0 0 8px var(--red)",
@@ -410,7 +201,7 @@ export function OperationsDashboard() {
           </div>
           <div className="top-actions" style={{ position: "relative" }}>
             {/* Multilingual venue assistance (FIFA WC 2026 requirement) */}
-            <LanguageSelector onLanguageChange={(code) => setLang(code)} />
+            <LanguageSelector onLanguageChange={(code) => setLang(code as SupportedLanguage)} />
             
             {/* Dark / Light Theme Toggle */}
             <button 
@@ -427,56 +218,13 @@ export function OperationsDashboard() {
               <input placeholder="Search operations" />
             </label>
 
-            {/* Notification button */}
-            <button 
-              className="icon-btn" 
-              aria-label={`Notifications, ${notifications.length} unread`}
-              onClick={() => setShowNotifications(!showNotifications)}
-            >
-              <Bell />
-              {notifications.length > 0 && <span>{notifications.length}</span>}
-            </button>
-
-            {/* Notifications Dropdown Panel */}
-            {showNotifications && (
-              <div className="notifications-dropdown" style={{
-                position: "absolute",
-                top: "54px",
-                right: "50px",
-                background: "var(--panel)",
-                border: "1px solid var(--line)",
-                borderRadius: "10px",
-                width: "320px",
-                boxShadow: "0 10px 25px rgba(0,0,0,0.3)",
-                zIndex: 100,
-                padding: "16px",
-                color: "var(--text)"
-              }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px", borderBottom: "1px solid var(--line)", paddingBottom: "8px" }}>
-                  <strong style={{ fontSize: "14px", fontFamily: "'Outfit', sans-serif" }}>Operations Alerts</strong>
-                  {notifications.length > 0 && (
-                    <button 
-                      onClick={() => setNotifications([])} 
-                      style={{ background: "transparent", border: 0, color: "var(--cyan)", fontSize: "11px", cursor: "pointer", fontWeight: 700 }}
-                    >
-                      Clear All
-                    </button>
-                  )}
-                </div>
-                {notifications.length === 0 ? (
-                  <p style={{ margin: "16px 0", fontSize: "12px", color: "var(--muted)", textAlign: "center" }}>No active alerts nominal state</p>
-                ) : (
-                  <div style={{ display: "grid", gap: "10px" }}>
-                    {notifications.map(n => (
-                      <div key={n.id} style={{ fontSize: "12px", borderLeft: `3px solid ${n.severity === 'critical' ? 'var(--red)' : n.severity === 'medium' ? 'var(--amber)' : 'var(--cyan)'}`, paddingLeft: "8px", paddingBottom: "4px" }}>
-                        <div style={{ fontWeight: 600, color: "var(--text)" }}>{n.text}</div>
-                        <small style={{ color: "var(--muted)" }}>{n.time} ago</small>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
+            {/* Notifications (extracted component) */}
+            <NotificationsPanel
+              notifications={notifications}
+              isOpen={showNotifications}
+              onToggle={() => setShowNotifications(!showNotifications)}
+              onClear={() => setNotifications([])}
+            />
 
             <button
               className="avatar"
@@ -494,7 +242,7 @@ export function OperationsDashboard() {
         {/* Event status ribbon */}
         <section className="statusbar" aria-label="Current event status">
           <span className="live">
-            <i />
+            <i aria-hidden="true" />
             LIVE
           </span>
           <span>Arena 01 · New York/New Jersey</span>
@@ -509,9 +257,9 @@ export function OperationsDashboard() {
         <div className="content">
           {/* Decorative radar background */}
           <div className="ambient-radar" aria-hidden="true">
-            <i />
-            <i />
-            <i />
+            <i aria-hidden="true" />
+            <i aria-hidden="true" />
+            <i aria-hidden="true" />
             <span />
           </div>
 
@@ -519,7 +267,7 @@ export function OperationsDashboard() {
           <section className="role-strip" aria-label="Role dashboard context">
             <div>
               <span>Current workspace</span>
-              <strong>{getNavLabel(activeView)}</strong>
+              <strong>{getNavLabel(activeView, t)}</strong>
             </div>
             {data.focus.map((item) => (
               <span className="focus-chip" key={item}>
@@ -567,90 +315,8 @@ export function OperationsDashboard() {
 
           {/* Main content grid */}
           <div className="grid-main">
-            {/* Crowd pressure panel */}
-            <section className="panel crowd">
-              <PanelTitle
-                icon={Activity}
-                title="Crowd Pressure"
-                subtitle="Sensor-fused density · last 90 minutes"
-                action="Open intelligence"
-              />
-              <div className="chart-summary">
-                <div>
-                  <span>{t.stadiumPressure}</span>
-                  <strong>{crowdIndex}</strong>
-                  <small>
-                    {crowdIndex > 80
-                      ? "Critical · High congestion"
-                      : crowdIndex > 65
-                        ? "Moderate · rising"
-                        : "Normal · flow steady"}
-                  </small>
-                </div>
-                <div
-                  className="chart"
-                  aria-label="Crowd pressure rose from 42 to 68 over 90 minutes"
-                >
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={crowdTrend}>
-                      <defs>
-                        <linearGradient id="fill" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0" stopColor="#00e5ff" stopOpacity={0.35} />
-                          <stop offset="1" stopColor="#00e5ff" stopOpacity={0} />
-                        </linearGradient>
-                      </defs>
-                      <XAxis dataKey="t" tickLine={false} axisLine={false} />
-                      <Tooltip />
-                      <Area
-                        type="monotone"
-                        dataKey="v"
-                        stroke="#00e5ff"
-                        fill="url(#fill)"
-                        strokeWidth={2}
-                      />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
-
-              {/* Zone density breakdown */}
-              <div className="zones">
-                {data.zones.map((zone) => (
-                  <div key={zone.name}>
-                    <div>
-                      <span>{zone.name}</span>
-                      <b
-                        className={
-                          zone.density > 80
-                            ? "critical"
-                            : zone.density > 65
-                              ? "warning"
-                              : "normal"
-                        }
-                      >
-                        {zone.density > 80
-                          ? "High"
-                          : zone.density > 65
-                            ? "Elevated"
-                            : "Normal"}
-                      </b>
-                    </div>
-                    <progress
-                      max={100}
-                      value={zone.density}
-                      aria-label={`${zone.name} density ${zone.density}%`}
-                      aria-valuenow={zone.density}
-                      aria-valuemin={0}
-                      aria-valuemax={100}
-                    />
-                    <small>
-                      {zone.density}% density · {zone.trend > 0 ? "+" : ""}
-                      {zone.trend}% trend
-                    </small>
-                  </div>
-                ))}
-              </div>
-            </section>
+            {/* Crowd pressure panel (extracted component) */}
+            <CrowdChart crowdIndex={crowdIndex} data={data} t={t} />
 
             {/* AI copilot panel */}
             <CopilotPanel

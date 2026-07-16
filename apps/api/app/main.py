@@ -1,8 +1,9 @@
+import asyncio
 from contextlib import asynccontextmanager
 from datetime import UTC, datetime
-import asyncio
 from time import perf_counter
 from uuid import uuid4
+
 import structlog
 from fastapi import Depends, FastAPI, Request, WebSocket, WebSocketDisconnect, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -11,6 +12,7 @@ from pydantic import BaseModel, Field
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
+
 from .config import get_settings
 from .schemas import (
     Assignment,
@@ -83,9 +85,7 @@ async def request_observability(request: Request, call_next):
     response = await call_next(request)
     response.headers["X-Request-ID"] = request_id
     response.headers["Cache-Control"] = (
-        "no-store"
-        if request.url.path.startswith("/api/v1/auth")
-        else "private, no-cache"
+        "no-store" if request.url.path.startswith("/api/v1/auth") else "private, no-cache"
     )
     logger.info(
         "request.complete",
@@ -130,12 +130,8 @@ async def refresh(request: Request, payload: RefreshRequest):
     return create_token_pair(decode_token(payload.refresh_token, "refresh"))
 
 
-@app.post(
-    "/api/v1/users", response_model=Principal, status_code=status.HTTP_201_CREATED
-)
-async def create_user(
-    payload: UserCreate, actor: Principal = Depends(require_roles(Role.ADMIN))
-):
+@app.post("/api/v1/users", response_model=Principal, status_code=status.HTTP_201_CREATED)
+async def create_user(payload: UserCreate, actor: Principal = Depends(require_roles(Role.ADMIN))):
     return await auth.create_user(payload, actor)
 
 
@@ -149,15 +145,11 @@ async def list_incidents(_: Principal = Depends(current_principal)):
     return await incidents.list()
 
 
-@app.post(
-    "/api/v1/incidents", response_model=Incident, status_code=status.HTTP_201_CREATED
-)
+@app.post("/api/v1/incidents", response_model=Incident, status_code=status.HTTP_201_CREATED)
 async def create_incident(
     payload: IncidentCreate,
     actor: Principal = Depends(
-        require_roles(
-            Role.ADMIN, Role.OPERATIONS, Role.SECURITY, Role.MEDICAL, Role.TRANSPORT
-        )
+        require_roles(Role.ADMIN, Role.OPERATIONS, Role.SECURITY, Role.MEDICAL, Role.TRANSPORT)
     ),
 ):
     return await incidents.create(payload, actor)
@@ -176,9 +168,7 @@ async def list_assignments(user: Principal = Depends(current_principal)):
 async def create_assignment(
     payload: AssignmentCreate,
     actor: Principal = Depends(
-        require_roles(
-            Role.ADMIN, Role.OPERATIONS, Role.SECURITY, Role.MEDICAL, Role.TRANSPORT
-        )
+        require_roles(Role.ADMIN, Role.OPERATIONS, Role.SECURITY, Role.MEDICAL, Role.TRANSPORT)
     ),
 ):
     return await assignments.create(payload, actor)

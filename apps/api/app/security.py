@@ -17,8 +17,8 @@ from uuid import uuid4
 import jwt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-from pydantic import BaseModel
 from pwdlib import PasswordHash
+from pydantic import BaseModel
 
 from .config import get_settings
 
@@ -76,12 +76,8 @@ def create_token_pair(principal: Principal) -> TokenPair:
     """Issue a fresh access/refresh token pair for the principal."""
     settings = get_settings()
     return TokenPair(
-        access_token=_token(
-            principal, "access", timedelta(minutes=settings.access_token_minutes)
-        ),
-        refresh_token=_token(
-            principal, "refresh", timedelta(days=settings.refresh_token_days)
-        ),
+        access_token=_token(principal, "access", timedelta(minutes=settings.access_token_minutes)),
+        refresh_token=_token(principal, "refresh", timedelta(days=settings.refresh_token_days)),
         expires_in=settings.access_token_minutes * 60,
         user=principal,
     )
@@ -98,13 +94,9 @@ def decode_token(token: str, expected_type: str = "access") -> Principal:
         )
         if claims["type"] != expected_type:
             raise ValueError("Unexpected token type")
-        return Principal(
-            id=claims["sub"], email=claims["email"], role=Role(claims["role"])
-        )
+        return Principal(id=claims["sub"], email=claims["email"], role=Role(claims["role"]))
     except (jwt.PyJWTError, KeyError, ValueError) as exc:
-        raise HTTPException(
-            status.HTTP_401_UNAUTHORIZED, "Invalid or expired token"
-        ) from exc
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid or expired token") from exc
 
 
 async def current_principal(

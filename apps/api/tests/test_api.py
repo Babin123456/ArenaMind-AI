@@ -54,9 +54,7 @@ def test_refresh_token_cannot_be_used_as_access_token():
 def test_refresh_token_flow():
     """A valid refresh token can be exchanged for a new token pair."""
     pair = create_token_pair(operator)
-    response = client.post(
-        "/api/v1/auth/refresh", json={"refresh_token": pair.refresh_token}
-    )
+    response = client.post("/api/v1/auth/refresh", json={"refresh_token": pair.refresh_token})
     assert response.status_code == 200
     data = response.json()
     assert "access_token" in data
@@ -147,9 +145,7 @@ def test_incident_rejects_short_title():
 
 def test_copilot_rejects_short_query():
     """Copilot query below min_length returns 422 validation error."""
-    response = client.post(
-        "/api/v1/copilot/query", headers=authorization(), json={"query": "Hi"}
-    )
+    response = client.post("/api/v1/copilot/query", headers=authorization(), json={"query": "Hi"})
     assert response.status_code == 422
 
 
@@ -184,9 +180,7 @@ async def test_rules_engine_uses_retrieved_sources(monkeypatch):
         ),
     )
     monkeypatch.setattr("app.services.audit.record", AsyncMock())
-    result = await copilot.answer(
-        CopilotQuery(query="Show overcrowded gates"), operator
-    )
+    result = await copilot.answer(CopilotQuery(query="Show overcrowded gates"), operator)
     assert result.sources == ["Crowd threshold response v1.0"]
     assert result.generated_by == "rules-engine+routing-rag"
 
@@ -196,9 +190,7 @@ async def test_copilot_fallback_provides_structured_response(monkeypatch):
     """Rules-engine fallback returns all required response fields."""
     monkeypatch.setattr(knowledge, "retrieve", AsyncMock(return_value=[]))
     monkeypatch.setattr("app.services.audit.record", AsyncMock())
-    result = await copilot.answer(
-        CopilotQuery(query="What is transport status"), operator
-    )
+    result = await copilot.answer(CopilotQuery(query="What is transport status"), operator)
     assert result.summary
     assert isinstance(result.reasoning, list)
     assert isinstance(result.recommendations, list)
@@ -211,9 +203,7 @@ async def test_copilot_llm_failure_fallback(monkeypatch):
     """If the LLM provider fails (raises an exception), the engine falls back to RAG fallback."""
     from app.config import Settings
 
-    monkeypatch.setattr(
-        "app.services.get_settings", lambda: Settings(ai_api_key="mock-key")
-    )
+    monkeypatch.setattr("app.services.get_settings", lambda: Settings(ai_api_key="mock-key"))
     monkeypatch.setattr(knowledge, "retrieve", AsyncMock(return_value=[]))
     monkeypatch.setattr("app.services.audit.record", AsyncMock())
 
