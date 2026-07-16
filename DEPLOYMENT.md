@@ -222,6 +222,45 @@ graph TD
 
 ---
 
+## 🔺 Part 3: Vercel Deployment Guide (Step-by-Step)
+
+Follow these exact steps to import and host the monorepo web frontend on Vercel:
+
+### 1️⃣ Import Project from GitHub
+1. Log in to your Vercel Dashboard and click **New Project**.
+2. Select **Importing from GitHub** and authorize your account if needed.
+3. Locate the repository `Babin123456/ArenaMind-AI` and click **Import**.
+4. In the configuration, select the branch **`main`**.
+
+### 2️⃣ Configure Project Settings
+Configure the project parameters exactly as follows:
+
+| Field | Selection / Value |
+| --- | --- |
+| **Vercel Team** | `Babin123` |
+| **Plan Type** | `Hobby` |
+| **Project Name** | `arena-mind-ai-web` |
+| **Framework Preset** | `Next.js` |
+| **Root Directory** | `apps/web` *(Vercel will ask you to choose where you want to create the project; use the slash divider to browse to `apps/web`)* |
+
+### 3️⃣ Configure Build & Development Settings
+Toggle the **Build and Development Settings** dropdown and configure:
+
+* **Build Command**: `npm run build` or `next build`
+* **Output Directory**: Next.js default (leave as default)
+* **Install Command**: `npm install --prefix=../..` *(This is required to resolve packages from the monorepo root)*
+
+### 4️⃣ Set Environment Variables
+In the **Environment Variables** section, add your environment settings (e.g. your backend URL, JWT secrets, etc.):
+
+1. Add your key-value pairs (for example, Key: `EXAMPLE_NAME`, Value: `your-value`).
+2. Select target environments: **Production and Preview**.
+3. Alternatively, you can copy the contents of your local `.env` and paste them directly into the Vercel env fields interface.
+
+Click **Deploy** to trigger the build. Vercel will automatically provision the edge routing, build the Next.js bundle, and provide a secure, live URL for your smart stadium dashboard.
+
+---
+
 ### 🛡️ Production Hardening Checklist
 
 Before launching in a live stadium tournament, complete these security and operations steps:
