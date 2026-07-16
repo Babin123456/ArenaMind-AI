@@ -108,7 +108,10 @@ Open `http://localhost:8080` in your browser.
 #### 🔑 Default Local Credentials
 Use these credentials to sign in to the dashboard during local testing:
 - **Email**: `administrator@arenamind.local`
-- **Password**: `ChangeMe-ArenaMind-2026`
+- **Password**: 
+  * If you copied `.env.example` to `.env` without changes, use: **`replace-with-a-strong-bootstrap-password`**
+  * If you did not create a `.env` file (or did not set `BOOTSTRAP_ADMIN_PASSWORD`), use: **`ChangeMe-ArenaMind-2026`**
+  * If you generated or specified a custom password, use your custom value.
 
 ---
 

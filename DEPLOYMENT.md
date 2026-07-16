@@ -185,7 +185,12 @@ Use this option to run the services directly on your host machine to allow fast 
    npm run dev
    ```
 
-3. Open [http://localhost:3000](http://localhost:3000) in your browser. Sign in using the default admin credentials (Email: `administrator@arenamind.local`, Password: `ChangeMe-ArenaMind-2026`, or the custom values you configured in your `.env`).
+3. Open [http://localhost:3000](http://localhost:3000) in your browser. Sign in using the default admin credentials:
+   * **Email**: `administrator@arenamind.local`
+   * **Password**:
+     * If you copied `.env.example` to `.env` without changes, use: **`replace-with-a-strong-bootstrap-password`**
+     * If you did not create a `.env` file (or did not set `BOOTSTRAP_ADMIN_PASSWORD`), use: **`ChangeMe-ArenaMind-2026`**
+     * If you generated or specified a custom password, use your custom value.
 
    > 🎨 **Branding & Theme**: The application's favicon is configured using the [favicon.png](favicon.png) asset, which is dynamically loaded by Next.js from [apps/web/src/app/icon.png](apps/web/src/app/icon.png).
 
