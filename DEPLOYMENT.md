@@ -243,11 +243,13 @@ flowchart TD
 ```
 
 ### 1️⃣ Step 1: Set up Cloud Databases
+
 * Set up your database instances (**MongoDB Atlas** and **Upstash Redis**). 
 * Whitelist IP **`0.0.0.0/0`** in MongoDB Atlas Network Access so Render can connect.
 * Copy both database connection URLs.
 
 ### 2️⃣ Step 2: Deploy Backend to Render (First!)
+
 Deploy your FastAPI server to **Render** (`apps/api`). During Render setup, you **must** configure these environment variables:
 
 | Render Environment Variable Key | Expected Value / Source |
@@ -265,6 +267,7 @@ Deploy your FastAPI server to **Render** (`apps/api`). During Render setup, you 
 Once deployed, copy your Render web service URL (e.g., `https://arena-mind-ai-api.onrender.com`).
 
 ### 3️⃣ Step 3: Deploy Frontend to Vercel (Second!)
+
 Import your Next.js app (`apps/web`) into **Vercel**. In the Vercel Dashboard, you **must** configure these environment variables before clicking Deploy:
 
 | Vercel Environment Variable Key | Expected Value / Source |
@@ -281,10 +284,12 @@ Import your Next.js app (`apps/web`) into **Vercel**. In the Vercel Dashboard, y
 Follow these exact steps to host the FastAPI Python backend on Render, enabling full persistent execution and secure WebSocket broadcast connections:
 
 ### 1️⃣ Create a New Web Service
+
 1. Log in to your [Render Dashboard](https://render.com) and click **New** -> **Web Service**.
 2. Connect your GitHub repository: `<your-github-username>/ArenaMind-AI`.
 
 ### 2️⃣ Configure Web Service Settings
+
 Configure the parameters exactly as follows:
 
 | Field | Selection / Value |
@@ -298,9 +303,11 @@ Configure the parameters exactly as follows:
 | **Start Command** | `python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT` |
 
 ### 3️⃣ Provision Cloud Databases (MongoDB Atlas & Upstash Redis)
+
 Before configuring Render environment variables, you must provision cloud databases that are accessible over the public internet:
 
 #### 🍃 A. MongoDB Atlas (Database Setup & IP Whitelisting)
+
 1. Log in to [MongoDB Atlas](https://www.mongodb.com/products/platform/atlas-database).
 2. Click **New Project** -> name it `ArenaMind-AI` -> click **Create Project**.
 3. In your project dashboard, click **Build a Database** -> select the **M0 (FREE)** shared tier -> click **Create**.
@@ -310,16 +317,21 @@ Before configuring Render environment variables, you must provision cloud databa
 5. Click **Finish and Close** -> **Go to Database Overview**.
 6. Click **Connect** -> select **Drivers** (under Connect to your application).
 7. Copy the connection string and replace the password placeholder:
+
    ```text
    mongodb+srv://babinbid3_db_user:<password>@cluster0.xxxxx.mongodb.net/arenamind?retryWrites=true&w=majority&appName=Cluster0
    ```
 
 #### 🔴 B. Upstash Redis (Cache Setup)
+
 1. Log in to [Upstash Console](https://upstash.com) (free tier available).
 2. Click **Create Database** -> name it `arenamind-cache` -> select **Redis**.
 3. Under the **Details** tab, copy the **Redis URL** (under the Node.js/Python connection guidelines, starting with `rediss://default:...`).
 
+---
+
 ### 4️⃣ Add Environment Variables to Render
+
 Click **Advanced** -> **Add Environment Variable** in your Render service and configure the variables:
 
 * **`MONGODB_URL`** = `your_mongodb_atlas_connection_string` *(obtained in step A7 above)*
@@ -341,12 +353,14 @@ Click **Create Web Service** to launch the backend. Render will deploy the uvico
 Follow these exact steps to import and host the monorepo web frontend on Vercel:
 
 ### 1️⃣ Import Project from GitHub
+
 1. Log in to your Vercel Dashboard and click **New Project**.
 2. Select **Importing from GitHub** and authorize your account if needed.
 3. Locate the repository `<your-github-username>/ArenaMind-AI` and click **Import**.
 4. In the configuration, select the branch **`main`**.
 
 ### 2️⃣ Configure Project Settings
+
 Configure the project parameters exactly as follows:
 
 | Field | Selection / Value |
@@ -358,22 +372,27 @@ Configure the project parameters exactly as follows:
 | **Root Directory** | `apps/web` *(Vercel will ask you to choose where you want to create the project; use the slash divider to browse to `apps/web`)* |
 
 ### 3️⃣ Configure Build & Development Settings
+
 Toggle the **Build and Development Settings** dropdown and configure:
 
 * **Build Command**: `npm run build` or `next build`
 * **Output Directory**: Next.js default (leave as default)
 * **Install Command**: `npm install --prefix=../..` *(This is required to resolve packages from the monorepo root)*
 
-### 4️⃣ Set Environment Variables & Connect to Render
-In the **Environment Variables** section, configure the API routing to point to your live Render backend:
+### 4️⃣ Set Environment Variables (Connect to Render Backend)
 
-1. Add your key-value pairs.
-2. Select target environments: **Production and Preview**.
-3. Configure the following keys:
-   * **`NEXT_PUBLIC_API_URL`** = `https://arena-mind-ai-api.onrender.com/api/v1` *(Replacing your local `http://localhost:8000/api/v1`)*
-   * **`NEXT_PUBLIC_WS_URL`** = `wss://arena-mind-ai-api.onrender.com/ws` *(Replacing your local `ws://localhost:8000/ws`)*
+In the **Environment Variables** section of the Vercel Dashboard, configure the following keys:
 
-4. **CRITICAL STEP**: Click **Deploy** to trigger the initial build. If you modify these variables later, you **must** navigate to the **Deployments** tab on Vercel, click the three dots `...` next to the latest build, and select **Redeploy**. This is required because Vercel embeds these variables during the build phase; a simple page refresh will not apply them.
+1. **`NEXT_PUBLIC_API_URL`** = `https://arena-mind-ai-api.onrender.com/api/v1` *(Replacing your local `http://localhost:8000/api/v1`)*
+2. **`NEXT_PUBLIC_WS_URL`** = `wss://arena-mind-ai-api.onrender.com/ws` *(Replacing your local `ws://localhost:8000/ws`)*
+
+> [!WARNING]
+> **CRITICAL WARNING**: Do not copy your local `NEXT_PUBLIC_API_URL` and `NEXT_PUBLIC_WS_URL` pointing to `localhost:8000`. On Vercel, these **must** point to your live, deployed Render backend URL. If you leave them as `localhost`, users will see `ERR_CONNECTION_REFUSED` when logging in.
+
+### 5️⃣ Deploy & Redeploy
+
+1. Click **Deploy** to trigger the initial build. Vercel will build the Next.js bundle and provide a secure, live URL for your smart stadium dashboard.
+2. **Redeploying (CRITICAL STEP)**: If you update these environment variables in Vercel Settings later, you **must** navigate to the **Deployments** tab, click the three dots `...` next to the latest build, and select **Redeploy**. This is required because Vercel embeds these variables during the build phase; a simple page refresh will not apply them.
 
 ---
 
