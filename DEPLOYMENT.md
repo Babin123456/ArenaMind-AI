@@ -229,6 +229,22 @@ graph TD
 
 ---
 
+## 🚀 Recommended Deployment Order & Workflow Roadmap
+
+To avoid build errors and connection failures, you **must** deploy the services in the following specific sequence:
+
+```mermaid
+flowchart TD
+    Step1[1. Cloud Databases: MongoDB Atlas & Upstash Redis] --> |Get DB Connection Strings| Step2[2. API Backend: Render Deployment]
+    Step2 --> |Get Backend Public URL| Step3[3. Web Frontend: Vercel Deployment]
+```
+
+1. **Step 1 (Databases)**: Set up your cloud database clusters (**MongoDB Atlas** and **Upstash Redis**). Copy their connection strings and credential passwords first.
+2. **Step 2 (Backend API)**: Deploy your FastAPI server to **Render** using the database connection strings. Once deployed, copy your Render web service URL (e.g., `https://arena-mind-ai-api.onrender.com`).
+3. **Step 3 (Frontend Web)**: Deploy the Next.js frontend to **Vercel**. Provide the backend URL from Step 2 into the Vercel environment settings before hitting deploy.
+
+---
+
 ## 🔺 Part 3: Vercel Deployment Guide (Step-by-Step)
 
 Follow these exact steps to import and host the monorepo web frontend on Vercel:
