@@ -27,7 +27,7 @@ class Settings(BaseSettings):
     ai_api_key: str | None = None
     ai_base_url: str | None = None
     ai_model: str = "llama-3.3-70b-versatile"
-    allowed_origins: str = "http://localhost:3000,http://localhost:8080"
+    allowed_origins: str = "http://localhost:3000,http://localhost:3001,http://localhost:3002,http://localhost:3003,http://localhost:8080"
 
     @property
     def origins(self) -> list[str]:

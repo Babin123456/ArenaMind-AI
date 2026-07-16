@@ -81,9 +81,64 @@ export function OperationsDashboard() {
   const [authenticated, setAuthenticated] = useState(false);
   const [activeView, setActiveView] = useState("Overview");
   const [query, setQuery] = useState("");
+  const [wsConnected, setWsConnected] = useState(false);
+  const [crowdIndex, setCrowdIndex] = useState(68);
 
   /* Restore session on mount */
   useEffect(() => setAuthenticated(hasSession()), []);
+
+  /* Establish WebSocket connection for live telemetry when authenticated */
+  useEffect(() => {
+    if (!authenticated) return;
+
+    let ws: WebSocket | null = null;
+    let reconnectTimeout: NodeJS.Timeout;
+
+    function connect() {
+      const jwtToken = sessionStorage.getItem("arenamind_token") || "";
+      const baseWsUrl = process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:8000/ws";
+      const wsUrl = `${baseWsUrl}/operations?token=${encodeURIComponent(jwtToken)}`;
+
+      ws = new WebSocket(wsUrl);
+
+      ws.onopen = () => {
+        setWsConnected(true);
+      };
+
+      ws.onmessage = (event) => {
+        try {
+          const message = JSON.parse(event.data);
+          if (message.type === "heartbeat") {
+            if (typeof message.crowd_index === "number") {
+              setCrowdIndex(message.crowd_index);
+            }
+          }
+        } catch (e) {
+          console.error("Error parsing WebSocket message", e);
+        }
+      };
+
+      ws.onclose = () => {
+        setWsConnected(false);
+        // Attempt connection recovery after 5 seconds
+        reconnectTimeout = setTimeout(connect, 5000);
+      };
+
+      ws.onerror = () => {
+        ws?.close();
+      };
+    }
+
+    connect();
+
+    return () => {
+      if (ws) {
+        ws.onclose = null;
+        ws.close();
+      }
+      clearTimeout(reconnectTimeout);
+    };
+  }, [authenticated]);
 
   /* Live dashboard data with offline-safe fallback */
   const dashboard = useQuery({
@@ -148,10 +203,15 @@ export function OperationsDashboard() {
 
         <div className="system">
           <span>
-            <i />
-            Systems nominal
+            <i
+              style={{
+                background: wsConnected ? "var(--green)" : "var(--red)",
+                boxShadow: wsConnected ? "0 0 8px var(--green)" : "0 0 8px var(--red)",
+              }}
+            />
+            {wsConnected ? "Connected live" : "Systems offline"}
           </span>
-          <small>Last sync 4 seconds ago</small>
+          <small>{wsConnected ? "Receiving live telemetry" : "Reconnecting to server..."}</small>
         </div>
       </aside>
 
@@ -275,8 +335,14 @@ export function OperationsDashboard() {
               <div className="chart-summary">
                 <div>
                   <span>Stadium pressure index</span>
-                  <strong>68</strong>
-                  <small>Moderate · rising</small>
+                  <strong>{crowdIndex}</strong>
+                  <small>
+                    {crowdIndex > 80
+                      ? "Critical · High congestion"
+                      : crowdIndex > 65
+                        ? "Moderate · rising"
+                        : "Normal · flow steady"}
+                  </small>
                 </div>
                 <div
                   className="chart"
