@@ -104,6 +104,17 @@ export function LoginScreen({ onAuthenticated }: LoginScreenProps) {
             <ChevronRight />
           </button>
         </form>
+
+        <div style={{ marginTop: "20px", borderTop: "1px solid var(--line)", paddingTop: "15px" }}>
+          <p style={{ margin: 0, fontSize: "11px", color: "var(--muted)", lineHeight: "1.4" }}>
+            💡 <strong>Local Test Credentials:</strong>
+          </p>
+          <ul style={{ margin: "5px 0 0", paddingLeft: "15px", fontSize: "11px", color: "var(--muted)", lineHeight: "1.5" }}>
+            <li>Email: <code>administrator@arenamind.local</code></li>
+            <li>Password (with unmodified `.env`): <code>replace-with-a-strong-bootstrap-password</code></li>
+            <li>Password (without `.env` fallback): <code>ChangeMe-ArenaMind-2026</code></li>
+          </ul>
+        </div>
       </section>
     </main>
   );
