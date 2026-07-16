@@ -262,13 +262,13 @@ Toggle the **Build and Development Settings** dropdown and configure:
 
 ### 4️⃣ Set Environment Variables
 
-In the **Environment Variables** section, add your environment settings (e.g. your backend URL, JWT secrets, etc.):
+In the **Environment Variables** section, add your environment settings:
 
-1. Add your key-value pairs (for example, Key: `EXAMPLE_NAME`, Value: `your-value`).
+1. Add your key-value pairs.
 2. Select target environments: **Production and Preview**.
-3. Alternatively, you can copy the contents of your local `.env` and paste them directly into the Vercel env fields interface.
+3. **CRITICAL WARNING**: Do not copy your local `NEXT_PUBLIC_API_URL` and `NEXT_PUBLIC_WS_URL` pointing to `localhost:8000`. On Vercel, these **must** point to your live, deployed Render backend URL (e.g., `https://arena-mind-ai-api.onrender.com/api/v1` and `wss://arena-mind-ai-api.onrender.com/ws`). If you leave them as `localhost`, users will see `ERR_CONNECTION_REFUSED` when logging in.
 
-Click **Deploy** to trigger the build. Vercel will automatically provision the edge routing, build the Next.js bundle, and provide a secure, live URL for your smart stadium dashboard.
+Click **Deploy** to trigger the build. Vercel will automatically build the Next.js bundle and provide a secure, live URL for your smart stadium dashboard.
 
 ---
 
@@ -339,10 +339,10 @@ Now that your API is live, update your Vercel project environment variables to r
 
 1. Open your Vercel Dashboard and navigate to project **`arena-mind-ai-web`** -> **Settings** -> **Environment Variables**.
 2. Configure the following keys:
-   * **`NEXT_PUBLIC_API_URL`** = `https://arena-mind-ai-api.onrender.com/api/v1`
-   * **`NEXT_PUBLIC_WS_URL`** = `wss://arena-mind-ai-api.onrender.com/ws`
+   * **`NEXT_PUBLIC_API_URL`** = `https://arena-mind-ai-api.onrender.com/api/v1` *(Replacing your local `http://localhost:8000/api/v1`)*
+   * **`NEXT_PUBLIC_WS_URL`** = `wss://arena-mind-ai-api.onrender.com/ws` *(Replacing your local `ws://localhost:8000/ws`)*
 3. Save the values.
-4. Navigate to the **Deployments** tab on Vercel, click `...` next to the latest build, and select **Redeploy** to compile the Next.js app with the new live URLs.
+4. **CRITICAL STEP**: Navigate to the **Deployments** tab on Vercel, click the three dots `...` next to the latest build, and select **Redeploy**. This is required because Vercel embeds these variables during the build phase; a simple page refresh will not apply them.
 
 ---
 
