@@ -117,10 +117,11 @@ Use this option to run the services directly on your host machine to allow fast 
    MONGODB_URL=mongodb://localhost:27017
    MONGODB_DATABASE=arenamind
    REDIS_URL=redis://localhost:6379/0
-   
-   JWT_SECRET=development-only-secret-change-me-now
+   # Generate a secure key: python -c "import secrets; print(secrets.token_hex(32))"
+   JWT_SECRET=replace-with-at-least-32-random-characters
    BOOTSTRAP_ADMIN_EMAIL=administrator@arenamind.local
-   BOOTSTRAP_ADMIN_PASSWORD=change-me-to-a-strong-password
+   # Generate a strong password: python -c "import secrets; print(secrets.token_urlsafe(16))"
+   BOOTSTRAP_ADMIN_PASSWORD=replace-with-a-strong-bootstrap-password
    
    AI_PROVIDER=gemini
    AI_API_KEY=your_gemini_api_key
