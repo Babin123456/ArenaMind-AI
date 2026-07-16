@@ -959,69 +959,173 @@ body.light .focus-chip {
   border-color: #cbd5e1;
   color: #334155;
 }
+body.light .panel {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03) !important;
+}
+
+body.light .panel-title h2 {
+  color: #0f172a !important;
+}
+
+body.light .panel-title button {
+  background: rgba(0, 229, 255, 0.08) !important;
+  color: #0284c7 !important;
+}
+body.light .panel-title button:hover {
+  background: rgba(0, 229, 255, 0.15) !important;
+  color: #0369a1 !important;
+}
+
 body.light .metric {
-  background: linear-gradient(135deg, #ffffff, #f1f5f9);
-  border-color: #cbd5e1;
+  background: linear-gradient(135deg, #ffffff, #f8fafc) !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05) !important;
 }
 body.light .metric strong {
-  color: #0f172a;
+  color: #0f172a !important;
+}
+
+body.light .content::before {
+  opacity: 0.03 !important;
+}
+
+/* Domain Brief in Light Mode */
+body.light .domain-brief {
+  background: linear-gradient(120deg, #f8fafc, #ffffff 70%) !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03) !important;
+}
+body.light .domain-brief h2 {
+  color: #0f172a !important;
+}
+body.light .domain-brief p:not(.eyebrow) {
+  color: #475569 !important;
+}
+body.light .domain-brief article {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
+body.light .domain-brief article strong {
+  color: #0f172a !important;
+}
+body.light .domain-brief article span {
+  color: #0284c7 !important;
+}
+
+/* Role strip in Light Mode */
+body.light .role-strip {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
+body.light .role-strip div strong {
+  color: #0f172a !important;
+}
+body.light .focus-chip {
+  background: #e2e8f0 !important;
+  border-color: #cbd5e1 !important;
+  color: #0369a1 !important;
+}
+
+/* Language selector */
+body.light .language-selector select {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+/* Chatbot Copilot in Light Mode */
+body.light .copilot form div {
+  background: #ffffff !important;
 }
 body.light .copilot input {
-  background: #f1f5f9;
-  color: #0f172a;
+  background: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+body.light .answer {
+  background: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+body.light .answer strong {
+  color: #0f172a !important;
+}
+body.light .answer p, 
+body.light .answer li {
+  color: #334155 !important;
 }
 body.light .prompts button {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
+  background: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+  color: #334155 !important;
 }
 body.light .prompts button:hover {
-  background: rgba(0, 229, 255, 0.1);
-  color: #0f172a;
+  background: rgba(0, 229, 255, 0.08) !important;
+  color: #0284c7 !important;
+  border-color: rgba(0, 229, 255, 0.3) !important;
 }
+
+/* Incidents list */
 body.light .incident {
-  border-top-color: #e2e8f0;
+  border-top-color: #e2e8f0 !important;
 }
 body.light .incident:hover {
-  background: rgba(226, 232, 240, 0.5);
+  background: #f8fafc !important;
 }
 body.light .incident strong {
-  color: #0f172a;
+  color: #0f172a !important;
 }
+
+/* Notifications dropdown */
+body.light .notifications-dropdown {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+}
+body.light .notifications-dropdown strong {
+  color: #0f172a !important;
+}
+body.light .notifications-dropdown div {
+  color: #334155 !important;
+}
+
 body.light .title-icon {
-  background: rgba(0, 229, 255, 0.15);
-  color: #0369a1;
+  background: rgba(0, 229, 255, 0.15) !important;
+  color: #0369a1 !important;
 }
 body.light .zones > div {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
+  background: #f8fafc !important;
+  border-color: #cbd5e1 !important;
 }
 body.light .chart-summary strong {
-  color: #0f172a;
+  color: #0f172a !important;
 }
 body.light .topbar h1 {
-  background: linear-gradient(135deg, #0f172a, #475569);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background: linear-gradient(135deg, #0f172a, #475569) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
 }
 body.light .login-panel {
-  background: #ffffff;
-  border-color: #cbd5e1;
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
 }
 body.light .login-panel h1 {
-  color: #0f172a;
+  color: #0f172a !important;
 }
 body.light .login-copy {
-  color: #475569;
+  color: #475569 !important;
 }
 body.light .login-panel label {
-  color: #334155;
+  color: #334155 !important;
 }
 body.light .login-panel input {
-  background: #f1f5f9;
-  color: #0f172a;
-  border-color: #cbd5e1;
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
 }
 body.light .login-panel input:focus {
-  border-color: var(--cyan);
+  border-color: var(--cyan) !important;
 }
 
