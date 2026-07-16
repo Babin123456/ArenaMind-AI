@@ -114,10 +114,20 @@ Use these credentials to sign in to the dashboard during local testing:
 
 ### Approach 2: Run Manually (For Active Development)
 
-This approach runs the services directly on your host machine to allow hot-reloading:
+This approach runs the frontend and backend directly on your host machine to allow quick code changes and hot-reloading.
 
-1. Start local MongoDB (`27017`) and Redis (`6379`).
-2. Run the **FastAPI Backend** (`apps/api`):
+#### 🗄️ Step 1: Start MongoDB (`27017`) and Redis (`6379`)
+You can start the required databases in one of two ways:
+
+* **Method A (Recommended: Hybrid Setup)**: Use Docker to run only the databases (keeps your host machine clean and avoids installing Redis on Windows):
+  ```bash
+  docker compose up -d mongodb redis
+  ```
+* **Method B (Native Services)**:
+  * **Windows**: Open an **Administrator Command Prompt** and start MongoDB: `net start MongoDB`. Start your local Redis instance (e.g., via WSL using `redis-server`).
+  * **macOS**: Start services via Homebrew: `brew services start mongodb-community` and `brew services start redis`.
+
+#### Step 2: Run the FastAPI Backend (`apps/api`)
 
    ```bash
    cd apps/api

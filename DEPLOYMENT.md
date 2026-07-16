@@ -95,7 +95,14 @@ Use this option to run the services directly on your host machine to allow fast 
 
 #### Step 1: Configure the Local Environment
 
-1. Ensure you have a local instance of **MongoDB** running on port `27017` and **Redis** running on port `6379`.
+1. Start the required **MongoDB** (`27017`) and **Redis** (`6379`) database services. You can run them in one of two ways:
+   * **Method A (Recommended: Hybrid Setup)**: Use Docker to run only the database containers (keeps your host machine clean and avoids installing Redis on Windows):
+     ```bash
+     docker compose up -d mongodb redis
+     ```
+   * **Method B (Native Services)**:
+     * **Windows**: Open an **Administrator Command Prompt** and run `net start MongoDB`. Start your local Redis instance (e.g. via WSL by typing `redis-server`).
+     * **macOS**: Start services via Homebrew: `brew services start mongodb-community` and `brew services start redis`.
 2. Copy the configuration template:
 
    ```bash
