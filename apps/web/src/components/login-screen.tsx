@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRight, Waves } from "lucide-react";
+import { ChevronRight, Waves, KeyRound, Info } from "lucide-react";
 import { FormEvent, useState } from "react";
 import { login } from "@/lib/api";
 
@@ -110,8 +110,8 @@ export function LoginScreen({ onAuthenticated }: LoginScreenProps) {
         </form>
 
         <div style={{ marginTop: "24px", borderTop: "1px solid var(--line)", paddingTop: "16px" }}>
-          <p style={{ margin: 0, fontSize: "12px", color: "var(--muted)", lineHeight: "1.4", fontWeight: 600 }}>
-            🚀 Deployed Demo Credentials:
+          <p style={{ margin: 0, fontSize: "12px", color: "var(--muted)", lineHeight: "1.4", fontWeight: 600, display: "flex", alignItems: "center", gap: "6px" }}>
+            <KeyRound style={{ width: "14px", height: "14px", color: "var(--cyan)" }} /> Deployed Demo Credentials:
           </p>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "8px", background: "rgba(0, 229, 255, 0.05)", border: "1px solid rgba(0, 229, 255, 0.15)", padding: "10px 12px", borderRadius: "8px" }}>
             <div style={{ fontSize: "11px", color: "var(--muted)", lineHeight: "1.5" }}>
@@ -144,8 +144,8 @@ export function LoginScreen({ onAuthenticated }: LoginScreenProps) {
               Autofill
             </button>
           </div>
-          <p style={{ margin: "12px 0 0", fontSize: "10px", color: "#64748b", lineHeight: "1.4" }}>
-            💡 <em>Note: If running locally from the repository, use the passwords defined in your local <code>.env</code> file.</em>
+          <p style={{ margin: "12px 0 0", fontSize: "10px", color: "#64748b", lineHeight: "1.4", display: "flex", alignItems: "center", gap: "5px" }}>
+            <Info style={{ width: "12px", height: "12px", flexShrink: 0 }} /> <em>Note: If running locally from the repository, use the passwords defined in your local <code>.env</code> file.</em>
           </p>
         </div>
       </section>
